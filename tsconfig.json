@@ -8,6 +8,18 @@
     },
     {
       "path": "./apps/gs-app"
+    },
+    {
+      "path": "./apps/gs-app-admin-e2e"
+    },
+    {
+      "path": "./apps/gs-app-admin"
+    },
+    {
+      "path": "./packages/libs"
+    },
+    {
+      "path": "./packages/ui"
     }
   ]
 }
