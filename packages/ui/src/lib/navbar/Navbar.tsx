@@ -17,7 +17,7 @@ import Image from "next/image";
 
 export const GeometrikaLogo = ({ isScrolled }: { isScrolled: boolean }) => {
   return (
-    <div className="flex items-center h-16"> 
+    <Link href="/" className="flex items-center h-16" aria-label="Geometrika home">
       <Image 
         src={isScrolled ? "/images/logo-white.png" : "/images/logo.png"}
         alt="geometrika" 
@@ -26,7 +26,7 @@ export const GeometrikaLogo = ({ isScrolled }: { isScrolled: boolean }) => {
         priority
         className="object-contain" 
       />
-    </div>
+    </Link>
   );
 };
 
