@@ -1,7 +1,7 @@
 "use client";
 
 import './global.css';
-import { AppNavbar } from '@gs-app/ui';
+import { AppNavbar, AppFooter } from '@gs-app/ui';
 
 // export const metadata = {
 //   title: 'Welcome to ',
@@ -15,9 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex flex-col min-h-screen">
         <AppNavbar />
+        <main className="flex-grow">
         {children}
+        </main>
+      <AppFooter />
       </body>
     </html>
   );
