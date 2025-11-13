@@ -6,17 +6,16 @@ import { Urbanist } from 'next/font/google';
 import { Toaster, toast } from 'react-hot-toast';
 
 
-export const metadata = {
-  title: 'Welcome to Geometrika ',
-  description: 'Geometrika Staging Area',
-};
+// export const metadata = {
+//   title: 'Welcome to Geometrika ',
+//   description: 'Geometrika Staging Area',
+// };
 
 const urbanist = Urbanist({
   subsets: ['latin'],
   variable: '--font-urbanist',
   display: 'swap',
 });
-
 
 export default function RootLayout({
   children,
