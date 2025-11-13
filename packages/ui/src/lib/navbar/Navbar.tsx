@@ -232,7 +232,7 @@ export interface IconProps {
   [key: string]: any;
 }
 
-export default function AppNavbar() {
+export default function AppNavbar({ onMenuClick }: { onMenuClick?: (menu: string) => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -336,23 +336,31 @@ export default function AppNavbar() {
           </DropdownMenu>
         </Dropdown>
 
-        <NavbarItem>
-          <Link
-            className={`font-medium transition-colors duration-300 ${
-              isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
-            }`}
-            href="/products"
-          >
-            Products
-          </Link>
-        </NavbarItem>
+       <NavbarItem>
+        <Link
+          className={`font-medium transition-colors duration-300 ${
+            isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
+          }`}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            onMenuClick?.('products');
+          }}
+        >
+          Products
+        </Link>
+      </NavbarItem>
 
         <NavbarItem>
           <Link
             className={`font-medium transition-colors duration-300 ${
               isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
             }`}
-            href="/about"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onMenuClick?.('About Us');
+            }}
           >
             About Us
           </Link>
@@ -363,7 +371,11 @@ export default function AppNavbar() {
             className={`font-medium transition-colors duration-300 ${
               isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
             }`}
-            href="/contact"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onMenuClick?.('Contact');
+            }}
           >
             Contact
           </Link>

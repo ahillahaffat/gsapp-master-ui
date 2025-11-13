@@ -77,10 +77,8 @@ export default function AboutSection({
             animate="visible"
             exit="hidden"
           >
-            {/* Tentukan arah masuk berdasarkan indeks slide */}
             {current % 2 === 0 ? (
               <>
-                {/* Image dari kiri */}
                 <motion.div
                   className="md:w-1/2"
                   initial={{ opacity: 0, x: -300 }}
