@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "nx build gs-app",
+  "buildCommand": "npx nx build gs-app",
   "outputDirectory": "dist/apps/gs-app/.next",
   "framework": "nextjs",
   "git": {
