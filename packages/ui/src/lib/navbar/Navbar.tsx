@@ -18,13 +18,13 @@ import Image from "next/image";
 export const GeometrikaLogo = ({ isScrolled }: { isScrolled: boolean }) => {
   return (
     <Link href="/" className="flex items-center h-16" aria-label="Geometrika home">
-      <Image 
+      <Image
         src={isScrolled ? "/images/logo-white.png" : "/images/logo.png"}
-        alt="geometrika" 
-        width={126} 
-        height={56} 
+        alt="geometrika"
+        width={126}
+        height={56}
         priority
-        className="object-contain" 
+        className="object-contain"
       />
     </Link>
   );
@@ -264,7 +264,7 @@ export default function AppNavbar() {
     <Navbar
       className={`fixed top-0 w-full transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#003366] shadow-lg backdrop-blur-md'
+          ? 'bg-[var(--color-primary)] shadow-lg backdrop-blur-md'
           : 'bg-transparent'
       }`}
       maxWidth="xl"
@@ -384,10 +384,10 @@ export default function AppNavbar() {
         <NavbarItem>
           <Button
             as={Link}
-            className={`font-medium transition-all duration-300 px-4 py-2 ${ 
+            className={`font-medium transition-all duration-300 px-4 py-2 ${
               isScrolled
-                ? 'bg-white text-[#003366] hover:bg-gray-100'
-                : 'bg-[#003366] text-white hover:bg-[#004080]'
+                ? 'bg-white text-[var(--color-primary)] hover:bg-[var(--color-gray-200)]'
+                : 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)]'
             }`}
             href="/signup"
             variant="solid"
