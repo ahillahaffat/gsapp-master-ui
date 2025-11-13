@@ -1,4 +1,5 @@
 import AboutSection from "./sections/aboutSection";
+import BrandSection from "./sections/brandSection";
 import Hero from "./sections/hero";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       align="left"
       />
       <AboutSection />
+      <BrandSection />
     </>
   );
 }

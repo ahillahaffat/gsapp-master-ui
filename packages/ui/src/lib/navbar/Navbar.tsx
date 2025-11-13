@@ -382,7 +382,7 @@ export default function AppNavbar({ onMenuClick }: { onMenuClick?: (menu: string
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end" className="gap-4"> {/* Added specific gap */}
+      {/* <NavbarContent justify="end" className="gap-4">
         <NavbarItem className="hidden lg:flex">
           <Link
             className={`font-medium transition-colors duration-300 ${
@@ -408,7 +408,7 @@ export default function AppNavbar({ onMenuClick }: { onMenuClick?: (menu: string
             Get Started
           </Button>
         </NavbarItem>
-      </NavbarContent>
+      </NavbarContent> */}
     </Navbar>
   );
 }
