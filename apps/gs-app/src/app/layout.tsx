@@ -17,6 +17,7 @@ const urbanist = Urbanist({
   display: 'swap',
 });
 
+
 export default function RootLayout({
   children,
 }: {
