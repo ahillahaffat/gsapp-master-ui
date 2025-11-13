@@ -93,7 +93,6 @@ export default function AboutSection({
                   />
                 </motion.div>
 
-                {/* Text dari kanan */}
                 <motion.div
                   className="md:w-1/2 p-8 md:pl-12"
                   initial={{ opacity: 0, x: 300 }}
