@@ -2,3 +2,4 @@
 
 export * from './lib/ui';
 export { default as AppNavbar } from './lib/navbar/Navbar';
+export { default as AppFooter } from './lib/footer/Footer';

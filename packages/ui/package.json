@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@heroui/navbar": "^2.2.25",
-    "@heroui/react": "^2.8.5"
+    "@heroui/react": "^2.8.5",
+    "react-hot-toast": "^2.6.0"
   }
 }

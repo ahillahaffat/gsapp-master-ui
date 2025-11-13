@@ -1,6 +1,6 @@
 "use client";
 
-import "@heroui/react/styles.css";
+import { useState, useEffect } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -13,17 +13,20 @@ import {
   Dropdown,
   DropdownMenu,
 } from "@heroui/react";
+import Image from "next/image";
 
-export const AcmeLogo = () => {
+export const GeometrikaLogo = ({ isScrolled }: { isScrolled: boolean }) => {
   return (
-    <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
-      <path
-        clipRule="evenodd"
-        d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-        fill="currentColor"
-        fillRule="evenodd"
+    <Link href="/" className="flex items-center h-16" aria-label="Geometrika home">
+      <Image
+        src={isScrolled ? "/images/logo-white.png" : "/images/logo.png"}
+        alt="geometrika"
+        width={126}
+        height={56}
+        priority
+        className="object-contain"
       />
-    </svg>
+    </Link>
   );
 };
 
@@ -110,7 +113,7 @@ export const Activity = ({fill, size, height, width, ...props}: IconProps) => {
         stroke={fill}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeMiterlimit={10}
+        strokeMiterlimit="10"
         strokeWidth={1.5}
       >
         <path d="M6.918 14.854l2.993-3.889 3.414 2.68 2.929-3.78" />
@@ -136,7 +139,7 @@ export const Flash = ({fill = "currentColor", size, height, width, ...props}: Ic
         stroke={fill}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeMiterlimit={10}
+        strokeMiterlimit="10"
         strokeWidth={1.5}
       />
     </svg>
@@ -179,7 +182,7 @@ export const TagUser = ({fill = "currentColor", size, height, width, ...props}: 
         stroke={fill}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeMiterlimit={10}
+        strokeMiterlimit="10"
         strokeWidth={1.5}
       />
       <path
@@ -229,101 +232,180 @@ export interface IconProps {
   [key: string]: any;
 }
 
+export default function AppNavbar({ onMenuClick }: { onMenuClick?: (menu: string) => void }) {
+  const [isScrolled, setIsScrolled] = useState(false);
 
-export default function AppNavbar() {
+  useEffect(() => {
+    if (typeof globalThis === 'undefined') return;
+
+    const handleScroll = () => {
+      if ((globalThis as any).scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    (globalThis as any).addEventListener('scroll', handleScroll);
+    return () => (globalThis as any).removeEventListener('scroll', handleScroll);
+  }, []);
 
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
-    scale: <Scale className="text-warning" fill="currentColor" size={30} />,
-    lock: <Lock className="text-success" fill="currentColor" size={30} />,
-    activity: <Activity className="text-secondary" fill="currentColor" size={30} />,
-    flash: <Flash className="text-primary" fill="currentColor" size={30} />,
-    server: <Server className="text-success" fill="currentColor" size={30} />,
-    user: <TagUser className="text-danger" fill="currentColor" size={30} />,
+    scale: <Scale className={isScrolled ? "text-white" : "text-[#003366]"} fill="currentColor" size={30} />,
+    lock: <Lock className={isScrolled ? "text-white" : "text-[#003366]"} fill="currentColor" size={30} />,
+    activity: <Activity className={isScrolled ? "text-white" : "text-[#003366]"} fill="currentColor" size={30} />,
+    flash: <Flash className={isScrolled ? "text-white" : "text-[#003366]"} fill="currentColor" size={30} />,
+    server: <Server className={isScrolled ? "text-white" : "text-[#003366]"} fill="currentColor" size={30} />,
+    user: <TagUser className={isScrolled ? "text-white" : "text-[#003366]"} fill="currentColor" size={30} />,
   };
 
   return (
-    <Navbar>
-      <NavbarBrand>
-        <AcmeLogo />
-        <p className="font-bold text-inherit">ACME</p>
+    <Navbar
+      className={`fixed top-0 w-full transition-all duration-300 ${
+        isScrolled
+          ? 'bg-[var(--color-primary)] shadow-lg backdrop-blur-md'
+          : 'bg-transparent'
+      }`}
+      maxWidth="xl"
+      isBlurred={isScrolled}
+    >
+      <NavbarBrand className="gap-0">
+        <GeometrikaLogo isScrolled={isScrolled} />
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+
+      <NavbarContent className="hidden sm:flex gap-6" justify="center">
         <Dropdown>
           <NavbarItem>
             <DropdownTrigger>
               <Button
                 disableRipple
-                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                className={`p-0 bg-transparent data-[hover=true]:bg-transparent font-medium transition-colors duration-300 ${
+                  isScrolled ? 'text-white' : 'text-gray-700'
+                }`}
                 endContent={icons.chevron}
                 radius="sm"
                 variant="light"
               >
-                Features
+                Solutions
               </Button>
             </DropdownTrigger>
           </NavbarItem>
           <DropdownMenu
-            aria-label="ACME features"
+            aria-label="2geometrika solutions"
+            className="w-[340px] mt-4"
             itemClasses={{
               base: "gap-4",
             }}
           >
             <DropdownItem
-              key="autoscaling"
-              description="ACME scales apps based on demand and load"
+              key="integration"
+              description="Seamless integration across all platforms"
               startContent={icons.scale}
             >
-              Autoscaling
+              Integration Services
             </DropdownItem>
             <DropdownItem
-              key="usage_metrics"
-              description="Real-time metrics to debug issues"
+              key="analytics"
+              description="Real-time analytics and insights"
               startContent={icons.activity}
             >
-              Usage Metrics
+              Analytics Dashboard
             </DropdownItem>
             <DropdownItem
-              key="production_ready"
-              description="ACME runs on ACME, join us at web scale"
+              key="enterprise"
+              description="Enterprise-grade solutions for your business"
               startContent={icons.flash}
             >
-              Production Ready
+              Enterprise Solutions
             </DropdownItem>
             <DropdownItem
-              key="99_uptime"
-              description="High availability and uptime guarantees"
+              key="security"
+              description="Top-tier security and compliance"
               startContent={icons.server}
             >
-              +99% Uptime
+              Security & Compliance
             </DropdownItem>
             <DropdownItem
-              key="supreme_support"
-              description="Support team ready to respond"
+              key="support"
+              description="24/7 dedicated support team"
               startContent={icons.user}
             >
-              +Supreme Support
+              Premium Support
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        <NavbarItem isActive>
-          <Link aria-current="page" href="#">
-            Customers
+
+       <NavbarItem>
+        <Link
+          className={`font-medium transition-colors duration-300 ${
+            isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
+          }`}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            onMenuClick?.('products');
+          }}
+        >
+          Products
+        </Link>
+      </NavbarItem>
+
+        <NavbarItem>
+          <Link
+            className={`font-medium transition-colors duration-300 ${
+              isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
+            }`}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onMenuClick?.('About Us');
+            }}
+          >
+            About Us
           </Link>
         </NavbarItem>
+
         <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
+          <Link
+            className={`font-medium transition-colors duration-300 ${
+              isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
+            }`}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onMenuClick?.('Contact');
+            }}
+          >
+            Contact
           </Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify="end">
+
+      <NavbarContent justify="end" className="gap-4"> {/* Added specific gap */}
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link
+            className={`font-medium transition-colors duration-300 ${
+              isScrolled ? 'text-white hover:text-gray-200' : 'text-gray-700 hover:text-[#003366]'
+            }`}
+            href="/login"
+          >
+            Login
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
+          <Button
+            as={Link}
+            className={`font-medium transition-all duration-300 px-4 py-2 ${
+              isScrolled
+                ? 'bg-white text-[var(--color-primary)] hover:bg-[var(--color-gray-200)]'
+                : 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)]'
+            }`}
+            href="/signup"
+            variant="solid"
+            radius="sm"
+          >
+            Get Started
           </Button>
         </NavbarItem>
       </NavbarContent>

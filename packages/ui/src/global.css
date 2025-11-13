@@ -1,1 +1,17 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --color-primary: #003366;
+  --color-primary-dark: #004080;
+  --color-primary-light: #335c99;
+  --color-white: #ffffff;
+  --color-gray-700: #374151;
+  --color-gray-200: #e5e7eb;
+  --navbar-bg: var(--color-primary);
+  --navbar-text: var(--color-gray-700);
+  --navbar-text-hover: var(--color-primary);
+}
