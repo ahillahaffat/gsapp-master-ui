@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface AboutSectionProps {
   title?: string;
   subtitle?: string;
-  description?: string;
+  descriptionDetail?: React.ReactNode;
 }
 
 const solutions = [
@@ -29,7 +29,16 @@ const solutions = [
 export default function AboutSection({
   title = 'Geometrika Studio',
   subtitle = 'Konsultan Independen Konstruksi',
-  description = `Geometrika Studio merupakan perusahaan di bidang jasa konsultan independen konstruksi sekaligus mitra strategis dalam proyek infrastruktur yang berdiri tanggal 28 Oktober 2024.`,
+  descriptionDetail = (
+    <>
+      <p className="text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-300 mb-2">
+        Geometrika Studio merupakan perusahaan di bidang jasa konsultan independen konstruksi sekaligus mitra strategis dalam proyek infrastruktur yang berdiri tanggal 28 Oktober 2024 dengan nama resmi <span className="font-semibold text-[var(--color-primary-dark)]">CV. Graha Sinergi Adiwidia</span>.
+      </p>
+      <p className="text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-300 mb-2">
+        Kami Berfokus Pada <span className="font-semibold text-[var(--color-primary-dark)]">Pengembangan Solusi Konstruksi Berbasis Teknologi yang Terintegrasi</span>, dengan memberikan layanan yang didasarkan pada 2 Bidang Utama, <span className="font-semibold text-[var(--color-primary)]">Geometry</span> dan <span className="font-semibold text-[var(--color-primary-dark)]">Geomatika</span>.
+      </p>
+    </>
+  ),
 }: AboutSectionProps) {
   const [current, setCurrent] = useState(0);
 
@@ -39,7 +48,7 @@ export default function AboutSection({
 
   return (
     <section className="relative w-full bg-white dark:bg-neutral-950 py-24 px-6 md:px-16 lg:px-32 font-[family-name:var(--font-montserrat)] overflow-hidden">
-      <motion.div
+              <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -55,9 +64,7 @@ export default function AboutSection({
         >
           {title}
         </h1>
-        <p className="text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-300">
-          {description}
-        </p>
+        {descriptionDetail}
       </motion.div>
 
       <motion.div
