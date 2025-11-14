@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { FaInstagram } from 'react-icons/fa';
 
 interface FooterLink {
   href: string;
@@ -31,8 +32,6 @@ const defaultLinks: FooterLink[] = [
 export const AppFooter = ({
   aboutTitle = 'ABOUT US',
   aboutText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat',
-  ctaText = 'SHOP ALL PRODUCTS',
-  ctaHref = '/products',
   logoSrc,
   logoAlt = 'Geometrika',
   links = defaultLinks,
@@ -50,12 +49,15 @@ export const AppFooter = ({
         <p className="text-sm leading-relaxed opacity-90 max-w-xl">
           {aboutText}
         </p>
-        <Link
-          href={ctaHref}
-          className="inline-block border-2 border-white px-8 py-3 text-sm font-medium uppercase tracking-wide hover:bg-white hover:text-[#003366] transition-colors duration-300"
-        >
-          {ctaText}
-        </Link>
+          <Link
+              href="https://www.instagram.com/geometrika.studio/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center w-12 h-12 border-2 border-white rounded-full hover:bg-white hover:text-[#003366] transition-colors duration-300"
+              aria-label="Instagram"
+            >
+              <FaInstagram className="text-xl" />
+            </Link>
         </div>
 
           <div className="flex justify-center lg:justify-end items-center">
