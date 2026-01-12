@@ -1,229 +1,262 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  Button,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from '@heroui/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
-const GeometrikaLogo = ({ isScrolled }: { isScrolled: boolean }) => (
-  <Link
-    href="/"
-    className="flex items-center h-16"
-    aria-label="Geometrika home"
-  >
-    <Image
-      src={isScrolled ? '/images/logo-white.png' : '/images/logo.png'}
-      alt="geometrika"
-      width={126}
-      height={56}
-      priority
-      className="object-contain"
-    />
-  </Link>
-);
-
-export default function AppNavbar({
-  onMenuClick,
-}: {
+interface AppNavbarProps {
   onMenuClick?: (menu: string) => void;
-}) {
+}
+
+const menuItems = [
+  { label: 'Beranda', path: '/' },
+  { label: 'Layanan', path: '/layanan' },
+  { label: 'Berita dan Artikel', path: '#' },
+  { label: 'Struktur Organisasi', path: '/struktur-organisasi' },
+  { label: 'Legalitas', path: '#' },
+  { label: 'Kolaborasi', path: '#' },
+];
+
+export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [pathname, setPathname] = useState<string>('');
 
+  // Use window.location instead of Next.js hooks to avoid App Router dependency
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    if (typeof window === 'undefined') return;
+    
+    const updatePathname = () => {
+      setPathname(window.location.pathname);
+    };
+    
+    // Set initial pathname
+    updatePathname();
+    
+    // Listen for browser navigation events
+    window.addEventListener('popstate', updatePathname);
+    
+    // Intercept pushState and replaceState to detect Next.js navigation
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+    
+    window.history.pushState = function(...args) {
+      originalPushState.apply(window.history, args);
+      updatePathname();
+    };
+    
+    window.history.replaceState = function(...args) {
+      originalReplaceState.apply(window.history, args);
+      updatePathname();
+    };
+    
+    // Also check pathname periodically in case Next.js navigates without triggering events
+    const intervalId = setInterval(updatePathname, 100);
+    
+    return () => {
+      window.removeEventListener('popstate', updatePathname);
+      window.history.pushState = originalPushState;
+      window.history.replaceState = originalReplaceState;
+      clearInterval(intervalId);
+    };
   }, []);
 
-  const menuItems = ['Solutions', 'Products', 'About Us', 'Contact'];
+  useEffect(() => {
+    setIsScrolled(false);
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const heroHeight = window.innerHeight * 0.8;
+      setIsScrolled(scrollY > heroHeight);
+    };
+
+    const timeoutId = setTimeout(() => {
+      handleScroll();
+    }, 100);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [pathname]);
+
+  const handleMenuClick = (item: { label: string; path: string }) => {
+    if (item.path === '#') {
+      onMenuClick?.(item.label);
+    }
+    // Navigation is handled by Link components, no need for router.push
+  };
+
+  const isActiveRoute = (path: string) => {
+    if (path === '/') {
+      return pathname === '/' || pathname === '';
+    }
+    return pathname === path;
+  };
 
   return (
     <>
-      <Navbar
-        className={`fixed top-0 w-full transition-all duration-300 ${
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[var(--color-primary)] shadow-lg backdrop-blur-md'
+            ? 'bg-[#032972] rounded-b-[10px] shadow-lg'
             : 'bg-transparent'
         }`}
-        maxWidth="xl"
-        isBlurred={isScrolled}
       >
-        <NavbarBrand>
-          <GeometrikaLogo isScrolled={isScrolled} />
-        </NavbarBrand>
-
-        <NavbarContent className="hidden sm:flex gap-6" justify="center">
-          <Dropdown>
-            <NavbarItem>
-              <DropdownTrigger>
-                <Button
-                  disableRipple
-                  className={`p-0 bg-transparent font-medium transition ${
-                    isScrolled ? 'text-white' : 'text-gray-700'
-                  }`}
-                  variant="light"
-                >
-                  Solutions
-                </Button>
-              </DropdownTrigger>
-            </NavbarItem>
-            <DropdownMenu aria-label="solutions" className="w-[340px] mt-4">
-              <DropdownItem
-                key="integration"
-                description="Seamless integration across all platforms"
-              >
-                Integration Services
-              </DropdownItem>
-              <DropdownItem
-                key="analytics"
-                description="Real-time analytics and insights"
-              >
-                Analytics Dashboard
-              </DropdownItem>
-              <DropdownItem
-                key="enterprise"
-                description="Enterprise-grade solutions"
-              >
-                Enterprise Solutions
-              </DropdownItem>
-              <DropdownItem
-                key="security"
-                description="Top-tier security and compliance"
-              >
-                Security & Compliance
-              </DropdownItem>
-              <DropdownItem key="support" description="24/7 dedicated support">
-                Premium Support
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-
-          {['Products', 'About Us', 'Contact'].map((item) => (
-            <NavbarItem key={item}>
+        <div className="flex flex-col items-center justify-center px-4 md:px-[148px] py-6 md:py-[24px] pb-[21px] gap-[10px] h-[101px] max-w-[1512px] mx-auto">
+          <div className="flex flex-row items-center justify-between lg:justify-center lg:gap-[227px] w-full max-w-[1259px] h-[56px]">
+            <div className="flex-none order-0 flex-grow-0">
               <Link
-                className={`font-medium transition ${
-                  isScrolled
-                    ? 'text-white hover:text-gray-200'
-                    : 'text-gray-700 hover:text-[#003366]'
-                }`}
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onMenuClick?.(item);
-                }}
+                href="/"
+                className="flex items-center"
+                aria-label="Geometrika home"
               >
-                {item}
+                <Image
+                  src="/images/logo-white.png"
+                  alt="Geometrika"
+                  width={126}
+                  height={56}
+                  priority
+                  className="object-contain"
+                />
               </Link>
-            </NavbarItem>
-          ))}
-        </NavbarContent>
+            </div>
 
-        <NavbarContent className="sm:hidden" justify="end">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`p-2 transition ${
-              isScrolled ? 'text-white' : 'text-gray-700'
-            }`}
-          >
-            {isMenuOpen ? (
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
+            <div className="hidden lg:flex flex-row items-center gap-[45px] flex-none order-1 flex-grow-0">
+              {menuItems.map((item) => {
+                const isActive = isActiveRoute(item.path);
+                if (item.path === '#') {
+                  return (
+                    <a
+                      key={item.label}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleMenuClick(item);
+                      }}
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                      className={`text-[18px] leading-[22px] text-white font-light ${
+                        isActive ? 'underline font-semibold' : 'no-underline'
+                      } hover:opacity-80 transition-opacity`}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.path}
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                    className={`text-[18px] leading-[22px] text-white font-light ${
+                      isActive ? 'underline font-semibold' : 'no-underline'
+                    } hover:opacity-80 transition-opacity`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden text-white ml-auto"
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
+                <span
+                  className={`block h-0.5 w-6 bg-white transition-all ${
+                    isMenuOpen ? 'rotate-45 translate-y-2' : ''
+                  }`}
                 />
-              </svg>
-            ) : (
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                <span
+                  className={`block h-0.5 w-6 bg-white transition-all ${
+                    isMenuOpen ? 'opacity-0' : ''
+                  }`}
                 />
-              </svg>
-            )}
-          </button>
-        </NavbarContent>
-      </Navbar>
+                <span
+                  className={`block h-0.5 w-6 bg-white transition-all ${
+                    isMenuOpen ? '-rotate-45 -translate-y-2' : ''
+                  }`}
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+      </nav>
 
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 sm:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       <div
-      className={`fixed inset-0 h-screen w-full bg-[var(--color-primary)] z-50
-      transform transition-transform duration-300 ease-in-out sm:hidden ${
-        isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}
+        className={`fixed inset-0 h-screen w-full bg-[#032972] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
         <div className="flex flex-col h-full p-6">
-        <div className="flex items-center justify-between mb-8">
-          <GeometrikaLogo isScrolled={true} />
-          <button
-            onClick={() => setIsMenuOpen(false)}
-            className="text-white"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="white" strokeWidth={2}>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
+          <div className="flex items-center justify-between mb-8">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/images/logo-white.png"
+                alt="Geometrika"
+                width={126}
+                height={56}
+                className="object-contain"
               />
-            </svg>
-          </button>
-        </div>
+            </Link>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="text-white"
+              aria-label="Close menu"
+            >
+              <div className="w-6 h-6 relative">
+                <span className="block absolute top-1/2 left-0 w-6 h-0.5 bg-white rotate-45" />
+                <span className="block absolute top-1/2 left-0 w-6 h-0.5 bg-white -rotate-45" />
+              </div>
+            </button>
+          </div>
 
           <nav className="flex flex-col gap-0 flex-1">
-            {menuItems.map((item) => (
-              <Link
-                key={item}
-                className="w-full text-white text-xl font-medium flex items-center justify-between py-5 border-b border-white/20"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsMenuOpen(false);
-                  onMenuClick?.(item);
-                }}
-              >
-                {item}
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth={2.5}
+            {menuItems.map((item) => {
+              const isActive = isActiveRoute(item.path);
+              if (item.path === '#') {
+                return (
+                  <a
+                    key={item.label}
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      handleMenuClick(item);
+                    }}
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                    className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${
+                      isActive ? 'underline font-semibold' : ''
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                );
+              }
+              return (
+                <Link
+                  key={item.label}
+                  href={item.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  style={{ fontFamily: 'Inter, sans-serif' }}
+                  className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${
+                    isActive ? 'underline font-semibold' : ''
+                  }`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-              </Link>
-            ))}
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
           <footer className="mt-auto pt-8 text-white/70 text-sm">
