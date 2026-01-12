@@ -16,6 +16,9 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@gs-app/source"]
+    "customConditions": ["@gs-app/source"],
+    "paths": {
+      "@gs-app/ui": ["packages/ui/src/index.ts"]
+    }
   }
 }
