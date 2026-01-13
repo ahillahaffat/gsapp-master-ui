@@ -14,26 +14,21 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
   return (
     <div className="relative w-full">
-      <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 items-center justify-center">
-        <div className="w-[30px] h-[30px] bg-white border-[3px] border-[#032972] rounded-full flex items-center justify-center">
-          <div className="w-[8px] h-[8px] bg-[#032972] rounded-full" />
-        </div>
-      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: index * 0.1 }}
         viewport={{ once: true }}
-        className="flex flex-col md:flex-row items-center w-full gap-8 md:gap-0"
+        className="flex flex-col md:flex-row items-center w-full gap-6 sm:gap-8 md:gap-0"
       >
         <div
           className={`w-full md:w-1/2 flex ${
-            isEven ? 'justify-end md:pr-16' : 'justify-start md:pr-16'
+            isEven ? 'justify-end md:pr-8 lg:pr-12 xl:pr-16' : 'justify-start md:pr-8 lg:pr-12 xl:pr-16'
           }`}
         >
           {isEven ? (
-            <div className="w-full md:w-[500px] h-[274px] rounded-[10px] overflow-hidden shadow-md">
+            <div className="w-full md:w-[500px] h-[200px] sm:h-[240px] md:h-[274px] rounded-lg md:rounded-[10px] overflow-hidden shadow-md">
               <img
                 src={project.image}
                 alt={project.title}
@@ -41,7 +36,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               />
             </div>
           ) : (
-            <div className="w-full md:w-[500px] flex flex-col gap-4 text-left md:text-right">
+            <div className="w-full md:w-[500px] flex flex-col gap-3 sm:gap-4 text-left md:text-right">
               <ProjectTitle title={project.title} />
               <ProjectDescription description={project.description} />
             </div>
@@ -50,16 +45,16 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
         <div
           className={`w-full md:w-1/2 flex ${
-            isEven ? 'justify-start md:pl-16' : 'justify-end md:pl-16'
+            isEven ? 'justify-start md:pl-8 lg:pl-12 xl:pl-16' : 'justify-end md:pl-8 lg:pl-12 xl:pl-16'
           }`}
         >
           {isEven ? (
-            <div className="w-full md:w-[500px] flex flex-col gap-4 text-left">
+            <div className="w-full md:w-[500px] flex flex-col gap-3 sm:gap-4 text-left">
               <ProjectTitle title={project.title} />
               <ProjectDescription description={project.description} />
             </div>
           ) : (
-            <div className="w-full md:w-[500px] h-[274px] rounded-[10px] overflow-hidden shadow-md">
+            <div className="w-full md:w-[500px] h-[200px] sm:h-[240px] md:h-[274px] rounded-lg md:rounded-[10px] overflow-hidden shadow-md">
               <img
                 src={project.image}
                 alt={project.title}
@@ -142,11 +137,7 @@ interface TimelineProps {
 export function Timeline({ projects }: TimelineProps) {
   return (
     <div className="relative mb-32">
-      <div className="hidden md:block absolute left-1/2 top-0 bottom-[-80px] w-[3px] bg-[#032972] -translate-x-1/2">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-[30px] h-[30px] bg-white border-[3px] border-[#032972] rounded-full flex items-center justify-center z-10">
-          <div className="w-[8px] h-[8px] bg-[#032972] rounded-full" />
-        </div>
-      </div>
+      <div className="hidden md:block absolute left-1/2 top-0 bottom-[-80px] w-[3px] bg-[#032972] -translate-x-1/2" />
 
       <div className="space-y-16 md:space-y-24 relative">
         {projects.map((project, index) => (
@@ -169,24 +160,24 @@ export function ShowcaseCard({ image, text }: ShowcaseCardProps) {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.4 }}
       viewport={{ once: true }}
-      className="mt-32 mb-32 md:mb-48"
+      className="mt-16 sm:mt-20 md:mt-24 lg:mt-32 mb-16 sm:mb-20 md:mb-32 lg:mb-48"
     >
       <div className="relative w-full mx-auto">
-        <div className="relative w-full h-[400px] md:h-[600px] lg:h-[700px] overflow-hidden rounded-[20px] z-0">
+          <div className="relative w-full h-[250px] sm:h-[350px] md:h-[500px] lg:h-[600px] xl:h-[700px] overflow-hidden rounded-lg md:rounded-xl lg:rounded-[20px] z-0">
           <img
             src={image}
             alt="Project Showcase"
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
-        <div className="absolute bottom-0 right-4 md:right-12 translate-y-1/2 z-10 w-full max-w-[95%] md:max-w-[707px]">
-          <div className="bg-[#032972] shadow-2xl rounded-[10px] p-8 md:py-[35px] md:px-[70px]">
+        <div className="absolute bottom-0 right-2 sm:right-4 md:right-8 lg:right-12 translate-y-1/2 z-10 w-full max-w-[95%] sm:max-w-[90%] md:max-w-[600px] lg:max-w-[707px]">
+          <div className="bg-[#032972] shadow-2xl rounded-lg md:rounded-[10px] p-4 sm:p-6 md:p-8 lg:py-[35px] lg:px-[70px]">
             <p
               className="text-white text-justify"
               style={{
                 fontFamily: "'Nunito Sans', sans-serif",
-                fontSize: '18px',
-                lineHeight: '25px',
+                fontSize: 'clamp(14px, 2vw, 18px)',
+                lineHeight: 'clamp(20px, 2.5vw, 25px)',
               }}
             >
               {text}

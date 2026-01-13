@@ -28,19 +28,19 @@ export function SolutionCard({ solution, isEven, index }: SolutionCardProps) {
           />
         </motion.div>
         <motion.div
-          className="md:w-1/2 p-8 md:pl-12"
+          className="md:w-1/2 p-6 sm:p-8 md:pl-10 lg:pl-12"
           initial={{ opacity: 0, x: 300 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -300 }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
           <h3
-            className="text-2xl md:text-4xl font-bold mb-4"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4"
             style={{ color: solution.color }}
           >
             {solution.title}
           </h3>
-          <p className="text-gray-700 text-lg md:text-xl">
+          <p className="text-gray-700 text-base sm:text-lg md:text-xl">
             {solution.description}
           </p>
         </motion.div>
@@ -64,19 +64,19 @@ export function SolutionCard({ solution, isEven, index }: SolutionCardProps) {
         />
       </motion.div>
       <motion.div
-        className="md:w-1/2 p-8 md:pl-12"
+        className="md:w-1/2 p-6 sm:p-8 md:pl-10 lg:pl-12"
         initial={{ opacity: 0, x: -300 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 300 }}
         transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
         <h3
-          className="text-2xl md:text-4xl font-bold mb-4"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4"
           style={{ color: solution.color }}
         >
           {solution.title}
         </h3>
-        <p className="text-gray-700 text-lg md:text-xl">
+        <p className="text-gray-700 text-base sm:text-lg md:text-xl">
           {solution.description}
         </p>
       </motion.div>
@@ -126,7 +126,7 @@ export function SectionHeader({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       viewport={{ once: true }}
-      className="max-w-4xl mx-auto text-center mb-16"
+      className="max-w-4xl mx-auto text-center mb-10 sm:mb-12 md:mb-14 lg:mb-16 px-4"
     >
       {subtitle && (
         <h2 className="text-sm md:text-base uppercase tracking-widest text-gray-500 mb-3">
@@ -134,7 +134,7 @@ export function SectionHeader({
         </h2>
       )}
       <h1
-        className="text-3xl md:text-5xl font-bold mb-8"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-7 md:mb-8"
         style={{ color: 'var(--color-primary)' }}
       >
         {title}

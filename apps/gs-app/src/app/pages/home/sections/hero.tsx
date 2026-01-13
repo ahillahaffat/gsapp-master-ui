@@ -31,8 +31,8 @@ export default function HeroSection({
 
   return (
     <main
-      className={`relative flex ${alignment} justify-center bg-cover bg-center`}
-      style={{ backgroundImage: `url(${backgroundImage})`, height }}
+      className={`relative flex ${alignment} justify-center bg-cover bg-center min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[700px]`}
+      style={{ backgroundImage: `url(${backgroundImage})`, height: height === '100vh' ? '100vh' : height }}
     >
       <div
         className="absolute inset-0 bg-black pointer-events-none"

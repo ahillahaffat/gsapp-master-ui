@@ -22,41 +22,37 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [pathname, setPathname] = useState<string>('');
 
-  // Use window.location instead of Next.js hooks to avoid App Router dependency
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
+    let currentPathname = window.location.pathname;
+    setPathname(currentPathname);
+    
     const updatePathname = () => {
-      setPathname(window.location.pathname);
+      const newPathname = window.location.pathname;
+      if (newPathname !== currentPathname) {
+        currentPathname = newPathname;
+        setPathname(newPathname);
+      }
     };
     
-    // Set initial pathname
-    updatePathname();
-    
-    // Listen for browser navigation events
     window.addEventListener('popstate', updatePathname);
     
-    // Intercept pushState and replaceState to detect Next.js navigation
-    const originalPushState = window.history.pushState;
-    const originalReplaceState = window.history.replaceState;
-    
-    window.history.pushState = function(...args) {
-      originalPushState.apply(window.history, args);
-      updatePathname();
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a[href]') as HTMLAnchorElement;
+      if (link && link.href && !link.href.startsWith('#')) {
+        setTimeout(updatePathname, 100);
+      }
     };
     
-    window.history.replaceState = function(...args) {
-      originalReplaceState.apply(window.history, args);
-      updatePathname();
-    };
+    document.addEventListener('click', handleClick);
     
-    // Also check pathname periodically in case Next.js navigates without triggering events
-    const intervalId = setInterval(updatePathname, 100);
+    const intervalId = setInterval(updatePathname, 500);
     
     return () => {
       window.removeEventListener('popstate', updatePathname);
-      window.history.pushState = originalPushState;
-      window.history.replaceState = originalReplaceState;
+      document.removeEventListener('click', handleClick);
       clearInterval(intervalId);
     };
   }, []);

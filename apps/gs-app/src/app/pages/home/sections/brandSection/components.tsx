@@ -67,11 +67,11 @@ export function SectionTitle({ title }: SectionTitleProps) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
-      className="mb-12"
+      className="mb-8 sm:mb-10 md:mb-12"
       style={{
         fontFamily: "'Nunito Sans', sans-serif",
         fontWeight: 900,
-        fontSize: 'clamp(32px, 5vw, 40px)',
+        fontSize: 'clamp(24px, 4vw, 40px)',
         lineHeight: '47px',
         textAlign: 'center',
         color: '#032972',
@@ -93,7 +93,7 @@ export function SectionDescription({ text }: SectionDescriptionProps) {
       style={{
         fontFamily: "'Nunito Sans', sans-serif",
         fontWeight: 400,
-        fontSize: '18px',
+        fontSize: 'clamp(14px, 2vw, 18px)',
         lineHeight: '28px',
         textAlign: 'center',
         color: '#032972',
@@ -125,7 +125,7 @@ export function BrandSectionContent({
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="text-center mb-12"
+        className="text-center mb-8 sm:mb-10 md:mb-12"
       >
         <SectionTitle title={title} />
         {description && <SectionDescription text={description} />}
