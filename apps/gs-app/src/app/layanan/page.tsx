@@ -14,7 +14,7 @@ export default function LayananPage() {
   return (
     <>
       <section className="relative w-full bg-white overflow-hidden">
-        <div className="relative w-full h-screen min-h-[600px]">
+        <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] min-h-[400px] sm:min-h-[500px] md:min-h-[600px]">
           <Image
             src="/images/hero.jpg"
             alt="Layanan"

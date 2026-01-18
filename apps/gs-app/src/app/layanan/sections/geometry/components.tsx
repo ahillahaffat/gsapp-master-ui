@@ -19,7 +19,7 @@ function ServiceCard({ service, buttonText, index }: ServiceCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       viewport={{ once: true }}
-      className="bg-white rounded-[20px] overflow-hidden flex flex-col border border-gray-200"
+      className="bg-white rounded-lg md:rounded-xl lg:rounded-[20px] overflow-hidden flex flex-col border border-gray-200"
       style={{ aspectRatio: '4/3' }}
     >
       <div className="relative w-full h-1/2">
@@ -27,12 +27,12 @@ function ServiceCard({ service, buttonText, index }: ServiceCardProps) {
           src={service.image}
           alt={service.title}
           fill
-          className="object-cover rounded-t-[20px]"
+          className="object-cover rounded-t-lg md:rounded-t-xl lg:rounded-t-[20px]"
         />
       </div>
-      <div className="h-1/2 p-6 flex flex-col justify-between">
+      <div className="h-1/2 p-4 sm:p-5 md:p-6 flex flex-col justify-between">
         <h3
-          className="text-2xl md:text-3xl font-bold mb-4 text-left"
+          className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 text-left"
           style={{ color: '#032972' }}
         >
           {service.title}
@@ -40,7 +40,7 @@ function ServiceCard({ service, buttonText, index }: ServiceCardProps) {
         <div>
           <Link
             href="/layanan/detail"
-            className="inline-block px-6 py-3 rounded-full text-white font-semibold transition-opacity hover:opacity-90"
+            className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-white font-semibold text-sm sm:text-base transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#032972' }}
           >
             {buttonText}
@@ -57,20 +57,20 @@ interface GeometrySectionProps {
 
 export function GeometrySection({ data }: GeometrySectionProps) {
   return (
-    <section className="relative w-full bg-white py-24 px-6 md:px-16 lg:px-32 overflow-hidden">
+    <section className="relative w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16 text-3xl md:text-4xl font-bold underline"
+          className="text-center mb-8 sm:mb-12 md:mb-16 text-2xl sm:text-3xl md:text-4xl font-bold underline"
           style={{ color: '#032972' }}
         >
           {data.title}
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8">
           {data.services.map((service, index) => (
             <ServiceCard
               key={service.id}

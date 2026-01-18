@@ -1,6 +1,7 @@
 import AboutSection from "./sections/aboutSection";
 import BrandSection from "./sections/brandSection";
 import Hero from "./sections/hero";
+import RecentProjectSection from "./sections/recentProjectSection";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       align="left"
       />
       <AboutSection />
+      <RecentProjectSection />
       <BrandSection />
     </>
   );
