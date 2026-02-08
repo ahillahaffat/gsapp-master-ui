@@ -11,7 +11,7 @@ interface AppNavbarProps {
 const menuItems = [
   { label: 'Beranda', path: '/' },
   { label: 'Layanan', path: '/layanan' },
-  { label: 'Berita dan Artikel', path: '#' },
+  { label: 'Berita dan Artikel', path: '/artikel' },
   { label: 'Struktur Organisasi', path: '/struktur-organisasi' },
   { label: 'Legalitas', path: '#' },
   { label: 'Kolaborasi', path: '#' },
@@ -24,10 +24,10 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     let currentPathname = window.location.pathname;
     setPathname(currentPathname);
-    
+
     const updatePathname = () => {
       const newPathname = window.location.pathname;
       if (newPathname !== currentPathname) {
@@ -35,9 +35,9 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
         setPathname(newPathname);
       }
     };
-    
+
     window.addEventListener('popstate', updatePathname);
-    
+
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const link = target.closest('a[href]') as HTMLAnchorElement;
@@ -45,11 +45,11 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
         setTimeout(updatePathname, 100);
       }
     };
-    
+
     document.addEventListener('click', handleClick);
-    
+
     const intervalId = setInterval(updatePathname, 500);
-    
+
     return () => {
       window.removeEventListener('popstate', updatePathname);
       document.removeEventListener('click', handleClick);
@@ -94,11 +94,10 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
             ? 'bg-[#032972] rounded-b-[10px] shadow-lg'
             : 'bg-transparent'
-        }`}
+          }`}
       >
         <div className="flex flex-col items-center justify-center px-4 md:px-[148px] py-6 md:py-[24px] pb-[21px] gap-[10px] h-[101px] max-w-[1512px] mx-auto">
           <div className="flex flex-row items-center justify-between lg:justify-center lg:gap-[227px] w-full max-w-[1259px] h-[56px]">
@@ -132,9 +131,8 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
                         handleMenuClick(item);
                       }}
                       style={{ fontFamily: 'Inter, sans-serif' }}
-                      className={`text-[18px] leading-[22px] text-white font-light ${
-                        isActive ? 'underline font-semibold' : 'no-underline'
-                      } hover:opacity-80 transition-opacity`}
+                      className={`text-[18px] leading-[22px] text-white font-light ${isActive ? 'underline font-semibold' : 'no-underline'
+                        } hover:opacity-80 transition-opacity`}
                     >
                       {item.label}
                     </a>
@@ -145,9 +143,8 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
                     key={item.label}
                     href={item.path}
                     style={{ fontFamily: 'Inter, sans-serif' }}
-                    className={`text-[18px] leading-[22px] text-white font-light ${
-                      isActive ? 'underline font-semibold' : 'no-underline'
-                    } hover:opacity-80 transition-opacity`}
+                    className={`text-[18px] leading-[22px] text-white font-light ${isActive ? 'underline font-semibold' : 'no-underline'
+                      } hover:opacity-80 transition-opacity`}
                   >
                     {item.label}
                   </Link>
@@ -162,19 +159,16 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
             >
               <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
                 <span
-                  className={`block h-0.5 w-6 bg-white transition-all ${
-                    isMenuOpen ? 'rotate-45 translate-y-2' : ''
-                  }`}
+                  className={`block h-0.5 w-6 bg-white transition-all ${isMenuOpen ? 'rotate-45 translate-y-2' : ''
+                    }`}
                 />
                 <span
-                  className={`block h-0.5 w-6 bg-white transition-all ${
-                    isMenuOpen ? 'opacity-0' : ''
-                  }`}
+                  className={`block h-0.5 w-6 bg-white transition-all ${isMenuOpen ? 'opacity-0' : ''
+                    }`}
                 />
                 <span
-                  className={`block h-0.5 w-6 bg-white transition-all ${
-                    isMenuOpen ? '-rotate-45 -translate-y-2' : ''
-                  }`}
+                  className={`block h-0.5 w-6 bg-white transition-all ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''
+                    }`}
                 />
               </div>
             </button>
@@ -190,9 +184,8 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
       )}
 
       <div
-        className={`fixed inset-0 h-screen w-full bg-[#032972] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed inset-0 h-screen w-full bg-[#032972] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         <div className="flex flex-col h-full p-6">
           <div className="flex items-center justify-between mb-8">
@@ -231,9 +224,8 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
                       handleMenuClick(item);
                     }}
                     style={{ fontFamily: 'Inter, sans-serif' }}
-                    className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${
-                      isActive ? 'underline font-semibold' : ''
-                    }`}
+                    className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${isActive ? 'underline font-semibold' : ''
+                      }`}
                   >
                     {item.label}
                   </a>
@@ -245,9 +237,8 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
                   href={item.path}
                   onClick={() => setIsMenuOpen(false)}
                   style={{ fontFamily: 'Inter, sans-serif' }}
-                  className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${
-                    isActive ? 'underline font-semibold' : ''
-                  }`}
+                  className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${isActive ? 'underline font-semibold' : ''
+                    }`}
                 >
                   {item.label}
                 </Link>
