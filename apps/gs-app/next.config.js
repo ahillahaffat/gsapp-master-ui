@@ -10,6 +10,15 @@ const nextConfig = {
   // See: https://nx.dev/recipes/next/next-config-setup
   nx: {},
   transpilePackages: ['@gs-app/ui'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        pathname: '/images/**',
+      },
+    ],
+  },
   webpack: (config) => {
     // Add alias for @gs-app/ui to resolve to source files
     config.resolve.alias = {
