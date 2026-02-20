@@ -2,19 +2,105 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Project } from './data';
+
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+}
 
 interface ProjectCardProps {
   project: Project;
   index: number;
 }
 
-export function ProjectCard({ project, index }: ProjectCardProps) {
+interface ProjectTitleProps {
+  title: string;
+}
+
+interface ProjectDescriptionProps {
+  description: string;
+}
+
+interface SectionTitleProps {
+  title: string;
+}
+
+interface TimelineProps {
+  projects: Project[];
+}
+
+interface ShowcaseCardProps {
+  image: string;
+  text: string;
+}
+
+interface RecentProjectSectionProps {
+  title?: string;
+  projects?: Project[];
+}
+
+// Data
+const defaultProjects: Project[] = [
+  {
+    id: 1,
+    title: 'Geomatika',
+    description:
+      'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
+    image: '/images/geo2.jpg',
+  },
+  {
+    id: 2,
+    title: 'Geomatika',
+    description:
+      'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
+    image: '/images/geo1.jpg',
+  },
+  {
+    id: 3,
+    title: 'Geomatika',
+    description:
+      'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
+    image: '/images/geo2.jpg',
+  },
+];
+
+// Sub-components
+function ProjectTitle({ title }: ProjectTitleProps) {
+  return (
+    <h3
+      style={{
+        fontFamily: "'DM Sans', sans-serif",
+        fontWeight: 700,
+        fontSize: 'clamp(28px, 4vw, 48px)',
+        color: '#032972',
+      }}
+    >
+      {title}
+    </h3>
+  );
+}
+
+function ProjectDescription({ description }: ProjectDescriptionProps) {
+  return (
+    <p
+      style={{
+        fontFamily: "'Nunito Sans', sans-serif",
+        color: '#8CA2C0',
+        lineHeight: '1.6',
+      }}
+    >
+      {description}
+    </p>
+  );
+}
+
+function ProjectCard({ project, index }: ProjectCardProps) {
   const isEven = index % 2 === 0;
 
   return (
     <div className="relative w-full">
-
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -68,48 +154,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   );
 }
 
-interface ProjectTitleProps {
-  title: string;
-}
-
-function ProjectTitle({ title }: ProjectTitleProps) {
-  return (
-    <h3
-      style={{
-        fontFamily: "'DM Sans', sans-serif",
-        fontWeight: 700,
-        fontSize: 'clamp(28px, 4vw, 48px)',
-        color: '#032972',
-      }}
-    >
-      {title}
-    </h3>
-  );
-}
-
-interface ProjectDescriptionProps {
-  description: string;
-}
-
-function ProjectDescription({ description }: ProjectDescriptionProps) {
-  return (
-    <p
-      style={{
-        fontFamily: "'Nunito Sans', sans-serif",
-        color: '#8CA2C0',
-        lineHeight: '1.6',
-      }}
-    >
-      {description}
-    </p>
-  );
-}
-
-interface SectionTitleProps {
-  title: string;
-}
-
-export function SectionTitle({ title }: SectionTitleProps) {
+function SectionTitle({ title }: SectionTitleProps) {
   return (
     <motion.h2
       initial={{ opacity: 0, y: 40 }}
@@ -130,11 +175,7 @@ export function SectionTitle({ title }: SectionTitleProps) {
   );
 }
 
-interface TimelineProps {
-  projects: Project[];
-}
-
-export function Timeline({ projects }: TimelineProps) {
+function Timeline({ projects }: TimelineProps) {
   return (
     <div className="relative mb-32">
       <div className="hidden md:block absolute left-1/2 top-0 bottom-[-80px] w-[3px] bg-[#032972] -translate-x-1/2" />
@@ -148,12 +189,7 @@ export function Timeline({ projects }: TimelineProps) {
   );
 }
 
-interface ShowcaseCardProps {
-  image: string;
-  text: string;
-}
-
-export function ShowcaseCard({ image, text }: ShowcaseCardProps) {
+function ShowcaseCard({ image, text }: ShowcaseCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -163,7 +199,7 @@ export function ShowcaseCard({ image, text }: ShowcaseCardProps) {
       className="mt-16 sm:mt-20 md:mt-24 lg:mt-32 mb-16 sm:mb-20 md:mb-32 lg:mb-48"
     >
       <div className="relative w-full mx-auto">
-          <div className="relative w-full h-[250px] sm:h-[350px] md:h-[500px] lg:h-[600px] xl:h-[700px] overflow-hidden rounded-lg md:rounded-xl lg:rounded-[20px] z-0">
+        <div className="relative w-full h-[250px] sm:h-[350px] md:h-[500px] lg:h-[600px] xl:h-[700px] overflow-hidden rounded-lg md:rounded-xl lg:rounded-[20px] z-0">
           <img
             src={image}
             alt="Project Showcase"
@@ -186,5 +222,23 @@ export function ShowcaseCard({ image, text }: ShowcaseCardProps) {
         </div>
       </div>
     </motion.div>
+  );
+}
+
+export default function RecentProjectSection({
+  title = 'Recent Project',
+  projects = defaultProjects,
+}: RecentProjectSectionProps) {
+  const showcaseText =
+    'Geometrika Studio menghadirkan ekosistem layanan terpadu berbasis Building Information Modeling (BIM) untuk menghasilkan data dan informasi akurat, sehingga setiap desain, perencanaan, dan pengambilan keputusan sepanjang siklus pekerjaan dapat dilakukan secara lebih cepat, tepat, dan efisien.';
+
+  return (
+    <section className="relative w-full bg-white py-24 px-4 md:px-[87px] overflow-hidden">
+      <div className="max-w-[1337px] mx-auto">
+        <SectionTitle title={title} />
+        <Timeline projects={projects} />
+        <ShowcaseCard image="/images/hero.jpg" text={showcaseText} />
+      </div>
+    </section>
   );
 }

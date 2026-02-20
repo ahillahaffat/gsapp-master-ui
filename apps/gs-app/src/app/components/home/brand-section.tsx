@@ -2,7 +2,12 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brand } from './data';
+
+// Types
+interface Brand {
+  name: string;
+  color: string;
+}
 
 interface BrandLogoProps {
   brand: Brand;
@@ -10,7 +15,45 @@ interface BrandLogoProps {
   type: 'client' | 'partner';
 }
 
-export function BrandLogo({ brand, index, type }: BrandLogoProps) {
+interface BrandRowProps {
+  brands: Brand[];
+  type: 'client' | 'partner';
+}
+
+interface SectionTitleProps {
+  title: string;
+}
+
+interface SectionDescriptionProps {
+  text: string;
+}
+
+interface BrandSectionContentProps {
+  title: string;
+  description: string;
+  brands: Brand[];
+  type: 'client' | 'partner';
+}
+
+interface BrandSectionProps {
+  clientsList?: Brand[];
+  partnersList?: Brand[];
+}
+
+// Data
+const baseBrands: Brand[] = [
+  { name: 'Uber', color: '#000000' },
+  { name: 'Apple', color: '#000000' },
+  { name: 'Meta', color: '#1877F3' },
+  { name: 'Airbnb', color: '#FF5A5F' },
+  { name: 'Google', color: '#4285F4' },
+];
+
+const defaultClientsList: Brand[] = [...baseBrands, baseBrands[0]];
+const defaultPartnersList: Brand[] = [...baseBrands];
+
+// Sub-components
+function BrandLogo({ brand, index, type }: BrandLogoProps) {
   const containerStyle =
     type === 'client'
       ? { width: '140px', height: '100px' }
@@ -32,12 +75,7 @@ export function BrandLogo({ brand, index, type }: BrandLogoProps) {
   );
 }
 
-interface BrandRowProps {
-  brands: Brand[];
-  type: 'client' | 'partner';
-}
-
-export function BrandRow({ brands, type }: BrandRowProps) {
+function BrandRow({ brands, type }: BrandRowProps) {
   const gap = type === 'client' ? '33px' : '79px';
 
   return (
@@ -56,11 +94,7 @@ export function BrandRow({ brands, type }: BrandRowProps) {
   );
 }
 
-interface SectionTitleProps {
-  title: string;
-}
-
-export function SectionTitle({ title }: SectionTitleProps) {
+function SectionTitle({ title }: SectionTitleProps) {
   return (
     <motion.h2
       initial={{ opacity: 0, y: 30 }}
@@ -82,11 +116,7 @@ export function SectionTitle({ title }: SectionTitleProps) {
   );
 }
 
-interface SectionDescriptionProps {
-  text: string;
-}
-
-export function SectionDescription({ text }: SectionDescriptionProps) {
+function SectionDescription({ text }: SectionDescriptionProps) {
   return (
     <p
       className="mx-auto"
@@ -105,14 +135,7 @@ export function SectionDescription({ text }: SectionDescriptionProps) {
   );
 }
 
-interface BrandSectionContentProps {
-  title: string;
-  description: string;
-  brands: Brand[];
-  type: 'client' | 'partner';
-}
-
-export function BrandSectionContent({
+function BrandSectionContent({
   title,
   description,
   brands,
@@ -132,5 +155,30 @@ export function BrandSectionContent({
       </motion.div>
       <BrandRow brands={brands} type={type} />
     </div>
+  );
+}
+
+// Main Component
+export default function BrandSection({
+  clientsList = defaultClientsList,
+  partnersList = defaultPartnersList,
+}: BrandSectionProps) {
+  return (
+    <section className="relative w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
+      <div className="max-w-[1337px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col items-center gap-12 sm:gap-16 md:gap-20 lg:gap-[60px] xl:gap-[100px]">
+        <BrandSectionContent
+          title="Our Clients"
+          description="Komitmen menjalin kemitraan strategis dengan berbagai pihak terpercaya demi menciptakan sinergi yang kuat dan berkelanjutan"
+          brands={clientsList}
+          type="client"
+        />
+        <BrandSectionContent
+          title="Our Partners"
+          description=""
+          brands={partnersList}
+          type="partner"
+        />
+      </div>
+    </section>
   );
 }

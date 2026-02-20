@@ -1,7 +1,7 @@
 import AboutSection from "../../components/home/about-section";
-import BrandSection from "./sections/brandSection";
-import Hero from "./sections/hero";
-import RecentProjectSection from "./sections/recentProjectSection";
+import BrandSection from "../../components/home/brand-section";
+import Hero from "../../components/home/hero-beranda";
+import RecentProjectSection from "../../components/home/recent-project";
 
 export default function Home() {
   return (
