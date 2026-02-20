@@ -11,10 +11,8 @@ interface AppNavbarProps {
 const menuItems = [
   { label: 'Beranda', path: '/' },
   { label: 'Layanan', path: '/layanan' },
-  { label: 'Berita dan Artikel', path: '/artikel' },
   { label: 'Struktur Organisasi', path: '/struktur-organisasi' },
-  { label: 'Legalitas', path: '#' },
-  { label: 'Kolaborasi', path: '#' },
+  { label: 'Kolaborasi', path: '/kolaborasi' },
 ];
 
 export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
@@ -47,7 +45,6 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
     };
 
     document.addEventListener('click', handleClick);
-
     const intervalId = setInterval(updatePathname, 500);
 
     return () => {
@@ -81,7 +78,6 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
     if (item.path === '#') {
       onMenuClick?.(item.label);
     }
-    // Navigation is handled by Link components, no need for router.push
   };
 
   const isActiveRoute = (path: string) => {
@@ -94,85 +90,100 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
             ? 'bg-[#032972] rounded-b-[10px] shadow-lg'
-            : 'bg-transparent'
-          }`}
+            : 'bg-[#032972]'
+        }`}
       >
-        <div className="flex flex-col items-center justify-center px-4 md:px-[148px] py-6 md:py-[24px] pb-[21px] gap-[10px] h-[101px] max-w-[1512px] mx-auto">
-          <div className="flex flex-row items-center justify-between lg:justify-center lg:gap-[227px] w-full max-w-[1259px] h-[56px]">
-            <div className="flex-none order-0 flex-grow-0">
-              <Link
-                href="/"
-                className="flex items-center"
-                aria-label="Geometrika home"
-              >
-                <Image
-                  src="/images/logo-white.png"
-                  alt="Geometrika"
-                  width={126}
-                  height={56}
-                  priority
-                  className="object-contain"
-                />
-              </Link>
-            </div>
+        <div className="flex items-center justify-between px-6 md:px-12 lg:px-20 xl:px-32 py-4 max-w-[1920px] mx-auto">
+          <div className="flex-shrink-0">
+            <Link href="/" className="flex items-center" aria-label="Geometrika home">
+              <Image
+                src="/images/logo-white.png"
+                alt="Geometrika"
+                width={180}
+                height={60}
+                priority
+                className="object-contain h-12 w-auto"
+              />
+            </Link>
+          </div>
 
-            <div className="hidden lg:flex flex-row items-center gap-[45px] flex-none order-1 flex-grow-0">
-              {menuItems.map((item) => {
-                const isActive = isActiveRoute(item.path);
-                if (item.path === '#') {
-                  return (
-                    <a
-                      key={item.label}
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleMenuClick(item);
-                      }}
-                      style={{ fontFamily: 'Inter, sans-serif' }}
-                      className={`text-[18px] leading-[22px] text-white font-light ${isActive ? 'underline font-semibold' : 'no-underline'
-                        } hover:opacity-80 transition-opacity`}
-                    >
-                      {item.label}
-                    </a>
-                  );
-                }
+          <div className="hidden lg:flex items-center gap-2 xl:gap-4 bg-white/10 rounded-full px-3 py-2">
+            {menuItems.map((item) => {
+              const isActive = isActiveRoute(item.path);
+              if (item.path === '#') {
                 return (
-                  <Link
+                  <a
                     key={item.label}
-                    href={item.path}
-                    style={{ fontFamily: 'Inter, sans-serif' }}
-                    className={`text-[18px] leading-[22px] text-white font-light ${isActive ? 'underline font-semibold' : 'no-underline'
-                      } hover:opacity-80 transition-opacity`}
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleMenuClick(item);
+                    }}
+                    className={`px-6 py-2.5 rounded-full text-base font-medium transition-all duration-300 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-white text-[#032972] shadow-md'
+                        : 'text-white hover:bg-white/20'
+                    }`}
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 );
-              })}
-            </div>
-
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden text-white ml-auto"
-              aria-label="Toggle menu"
-            >
-              <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
-                <span
-                  className={`block h-0.5 w-6 bg-white transition-all ${isMenuOpen ? 'rotate-45 translate-y-2' : ''
-                    }`}
-                />
-                <span
-                  className={`block h-0.5 w-6 bg-white transition-all ${isMenuOpen ? 'opacity-0' : ''
-                    }`}
-                />
-                <span
-                  className={`block h-0.5 w-6 bg-white transition-all ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''
-                    }`}
-                />
-              </div>
-            </button>
+              }
+              return (
+                <Link
+                  key={item.label}
+                  href={item.path}
+                  className={`px-6 py-2.5 rounded-full text-base font-medium transition-all duration-300 whitespace-nowrap ${
+                    isActive
+                      ? 'bg-white text-[#032972] shadow-md'
+                      : 'text-white hover:bg-white/20'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
+
+          <div className="hidden lg:flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full overflow-hidden border-2 border-white">
+              <Image
+                src="/images/id-flag.png"
+                alt="Indonesia"
+                width={24}
+                height={24}
+                className="object-cover"
+              />
+            </div>
+            <span className="text-white font-medium">ID</span>
+          </div>
+
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden text-white ml-auto"
+            aria-label="Toggle menu"
+          >
+            <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
+              <span
+                className={`block h-0.5 w-6 bg-white transition-all ${
+                  isMenuOpen ? 'rotate-45 translate-y-2' : ''
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-white transition-all ${
+                  isMenuOpen ? 'opacity-0' : ''
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-white transition-all ${
+                  isMenuOpen ? '-rotate-45 -translate-y-2' : ''
+                }`}
+              />
+            </div>
+          </button>
         </div>
       </nav>
 
@@ -184,8 +195,9 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
       )}
 
       <div
-        className={`fixed inset-0 h-screen w-full bg-[#032972] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+        className={`fixed inset-0 h-screen w-full bg-[#032972] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
         <div className="flex flex-col h-full p-6">
           <div className="flex items-center justify-between mb-8">
@@ -223,9 +235,9 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
                       setIsMenuOpen(false);
                       handleMenuClick(item);
                     }}
-                    style={{ fontFamily: 'Inter, sans-serif' }}
-                    className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${isActive ? 'underline font-semibold' : ''
-                      }`}
+                    className={`w-full text-white text-xl font-medium flex items-center py-5 border-b border-white/20 ${
+                      isActive ? 'bg-white/10' : ''
+                    }`}
                   >
                     {item.label}
                   </a>
@@ -236,9 +248,9 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
                   key={item.label}
                   href={item.path}
                   onClick={() => setIsMenuOpen(false)}
-                  style={{ fontFamily: 'Inter, sans-serif' }}
-                  className={`w-full text-white text-xl font-light flex items-center py-5 border-b border-white/20 ${isActive ? 'underline font-semibold' : ''
-                    }`}
+                  className={`w-full text-white text-xl font-medium flex items-center py-5 border-b border-white/20 ${
+                    isActive ? 'bg-white/10' : ''
+                  }`}
                 >
                   {item.label}
                 </Link>
