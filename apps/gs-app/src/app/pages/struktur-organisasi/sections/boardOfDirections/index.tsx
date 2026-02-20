@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { BoardOfDirections } from './components';
 import { boardOfDirectionsData, BoardOfDirectionsData } from './data';
-import { client } from '../../../../lib/sanity.client';
-import { allTeamMembersQuery, TeamMemberSource } from '../../../../lib/sanity.queries';
+import { allTeamMembersQuery, TeamMemberSource } from '@/lib/sanity.queries';
+import { client } from '@/lib/sanity.client';
 
 export default function BoardOfDirectionsSection() {
   const [data, setData] = useState<BoardOfDirectionsData>(boardOfDirectionsData);
@@ -16,13 +16,13 @@ export default function BoardOfDirectionsSection() {
 
         if (result && result.length > 0) {
 
-          const ceoMember = result[0]; 
+          const ceoMember = result[0];
           const otherMembers = result.slice(1);
 
           const newData: BoardOfDirectionsData = {
-            title: boardOfDirectionsData.title, // Keep existing title
+            title: boardOfDirectionsData.title,
             ceo: {
-              id: 1, // Dummy ID
+              id: 1,
               name: ceoMember.name,
               title: ceoMember.position,
               description: ceoMember.bio || boardOfDirectionsData.ceo.description,
