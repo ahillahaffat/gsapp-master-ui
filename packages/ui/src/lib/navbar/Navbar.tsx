@@ -110,7 +110,7 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center gap-2 xl:gap-4 bg-white/10 rounded-full px-3 py-2">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-4 bg-[#0460D9] rounded-full px-3 py-2">
             {menuItems.map((item) => {
               const isActive = isActiveRoute(item.path);
               if (item.path === '#') {
@@ -151,7 +151,7 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
           <div className="hidden lg:flex items-center gap-2">
             <div className="w-6 h-6 rounded-full overflow-hidden border-2 border-white">
               <Image
-                src="/images/id-flag.png"
+                src="/images/id.svg"
                 alt="Indonesia"
                 width={24}
                 height={24}

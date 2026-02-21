@@ -1,12 +1,14 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-// Types
+// ─── Types ───────────────────────────────────────────────────────────────────
+
 interface Brand {
-  name: string;
-  color: string;
+  image: string;
+  name?: string;
 }
 
 interface BrandLogoProps {
@@ -30,7 +32,7 @@ interface SectionDescriptionProps {
 
 interface BrandSectionContentProps {
   title: string;
-  description: string;
+  description?: string;
   brands: Brand[];
   type: 'client' | 'partner';
 }
@@ -40,52 +42,63 @@ interface BrandSectionProps {
   partnersList?: Brand[];
 }
 
-// Data
-const baseBrands: Brand[] = [
-  { name: 'Uber', color: '#000000' },
-  { name: 'Apple', color: '#000000' },
-  { name: 'Meta', color: '#1877F3' },
-  { name: 'Airbnb', color: '#FF5A5F' },
-  { name: 'Google', color: '#4285F4' },
+const defaultClientsList: Brand[] = [
+  { image: '/images/1.png', name: 'Client 1' },
+  { image: '/images/2.png', name: 'Client 2' },
+  { image: '/images/3.jpeg', name: 'Client 3' },
+  { image: '/images/4.png', name: 'Client 4' },
+  { image: '/images/5.png', name: 'Client 5' },
+  { image: '/images/6.jpg', name: 'Client 6' },
 ];
 
-const defaultClientsList: Brand[] = [...baseBrands, baseBrands[0]];
-const defaultPartnersList: Brand[] = [...baseBrands];
+const defaultPartnersList: Brand[] = [
+  { image: '/images/7.png', name: 'Partner 1' },
+  { image: '/images/8.png', name: 'Partner 2' },
+  { image: '/images/9.png', name: 'Partner 3' },
+  { image: '/images/10.png', name: 'Partner 4' },
+  { image: '/images/11.png', name: 'Partner 5' },
+];
 
-// Sub-components
+
 function BrandLogo({ brand, index, type }: BrandLogoProps) {
-  const containerStyle =
-    type === 'client'
-      ? { width: '140px', height: '100px' }
-      : { width: '100px', height: '100px' };
-
   return (
-    <div
-      key={`${type}-${index}`}
-      className="flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300"
-      style={containerStyle}
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      viewport={{ once: true }}
+      className={`
+        flex items-center justify-center flex-shrink-0
+        transition-all duration-300 hover:scale-105
+        ${type === 'client'
+          ? 'w-[150px] h-[100px] md:w-[180px] md:h-[120px]'
+          : 'w-[100px] h-[100px] md:w-[120px] md:h-[120px]'}
+      `}
     >
-      <span
-        className="font-bold text-2xl"
-        style={{ color: brand.color }}
-      >
-        {brand.name}
-      </span>
-    </div>
+      <Image
+        src={brand.image}
+        alt={brand.name ?? `brand-logo-${index}`}
+        width={180}
+        height={120}
+        className="w-full h-full object-contain"
+      />
+    </motion.div>
   );
 }
 
 function BrandRow({ brands, type }: BrandRowProps) {
-  const gap = type === 'client' ? '33px' : '79px';
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
+      transition={{ duration: 0.6, delay: 0.2 }}
       viewport={{ once: true }}
-      className="w-full flex flex-wrap justify-center items-center"
-      style={{ gap }}
+      className={`
+        w-full flex flex-wrap justify-center items-center
+        ${type === 'client'
+          ? 'gap-x-10 gap-y-8 md:gap-x-12 md:gap-y-10'
+          : 'gap-x-14 gap-y-8 md:gap-x-20 md:gap-y-10'}
+      `}
     >
       {brands.map((brand, idx) => (
         <BrandLogo key={`${type}-${idx}`} brand={brand} index={idx} type={type} />
@@ -94,21 +107,56 @@ function BrandRow({ brands, type }: BrandRowProps) {
   );
 }
 
+
+function MobileMarquee({ brands, type }: BrandRowProps) {
+  const doubled = [...brands, ...brands];
+  const duration = type === 'client' ? 18 : 14;
+
+  return (
+    <div className="w-full overflow-hidden relative">
+      {/* Fade left edge */}
+      <div className="absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+      {/* Fade right edge */}
+      <div className="absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+      <motion.div
+        className="flex items-center"
+        animate={{ x: ['0%', '-50%'] }}
+        transition={{ duration, ease: 'linear', repeat: Infinity }}
+      >
+        {doubled.map((brand, idx) => (
+          <div
+            key={`marquee-${type}-${idx}`}
+            className={`
+              flex-shrink-0 flex items-center justify-center mx-5
+              ${type === 'client' ? 'w-[120px] h-[80px]' : 'w-[80px] h-[80px]'}
+            `}
+          >
+            <Image
+              src={brand.image}
+              alt={brand.name ?? `brand-logo-${idx}`}
+              width={120}
+              height={80}
+              className="w-full h-full object-contain"
+            />
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
 function SectionTitle({ title }: SectionTitleProps) {
   return (
     <motion.h2
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.5 }}
       viewport={{ once: true }}
-      className="mb-8 sm:mb-10 md:mb-12"
+      className="text-center font-black text-[#032972] leading-tight mb-4"
       style={{
         fontFamily: "'Nunito Sans', sans-serif",
-        fontWeight: 900,
-        fontSize: 'clamp(24px, 4vw, 40px)',
-        lineHeight: '47px',
-        textAlign: 'center',
-        color: '#032972',
+        fontSize: 'clamp(22px, 4vw, 40px)',
       }}
     >
       {title}
@@ -118,54 +166,52 @@ function SectionTitle({ title }: SectionTitleProps) {
 
 function SectionDescription({ text }: SectionDescriptionProps) {
   return (
-    <p
-      className="mx-auto"
+    <motion.p
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+      viewport={{ once: true }}
+      className="text-center text-[#032972] mx-auto max-w-[760px]"
       style={{
         fontFamily: "'Nunito Sans', sans-serif",
-        fontWeight: 400,
-        fontSize: 'clamp(14px, 2vw, 18px)',
-        lineHeight: '28px',
-        textAlign: 'center',
-        color: '#032972',
-        maxWidth: '955px',
+        fontSize: 'clamp(13px, 2vw, 16px)',
+        lineHeight: '1.75',
       }}
     >
       {text}
-    </p>
+    </motion.p>
   );
 }
 
-function BrandSectionContent({
-  title,
-  description,
-  brands,
-  type,
-}: BrandSectionContentProps) {
+function BrandSectionContent({ title, description, brands, type }: BrandSectionContentProps) {
   return (
-    <div className="flex flex-col items-center w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="text-center mb-8 sm:mb-10 md:mb-12"
-      >
+    <div className="flex flex-col items-center w-full gap-8 sm:gap-10">
+      {/* Header */}
+      <div className="flex flex-col items-center gap-3 w-full px-4">
         <SectionTitle title={title} />
         {description && <SectionDescription text={description} />}
-      </motion.div>
-      <BrandRow brands={brands} type={type} />
+      </div>
+
+      {/* Mobile: Marquee | Desktop: Grid */}
+      <div className="w-full">
+        <div className="block md:hidden">
+          <MobileMarquee brands={brands} type={type} />
+        </div>
+        <div className="hidden md:block">
+          <BrandRow brands={brands} type={type} />
+        </div>
+      </div>
     </div>
   );
 }
 
-// Main Component
 export default function BrandSection({
   clientsList = defaultClientsList,
   partnersList = defaultPartnersList,
 }: BrandSectionProps) {
   return (
-    <section className="relative w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
-      <div className="max-w-[1337px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col items-center gap-12 sm:gap-16 md:gap-20 lg:gap-[60px] xl:gap-[100px]">
+    <section className="relative w-full bg-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
+      <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-10 sm:gap-12 md:gap-14">
         <BrandSectionContent
           title="Our Clients"
           description="Komitmen menjalin kemitraan strategis dengan berbagai pihak terpercaya demi menciptakan sinergi yang kuat dan berkelanjutan"
@@ -174,7 +220,6 @@ export default function BrandSection({
         />
         <BrandSectionContent
           title="Our Partners"
-          description=""
           brands={partnersList}
           type="partner"
         />
