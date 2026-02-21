@@ -1,18 +1,53 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { GeomatikaData } from './data';
+import { client, urlFor } from '../../../lib/sanity.client';
+import { serviceByCategoryQuery, Service } from '../../../lib/sanity.queries';
 
-interface GeomatikaSectionProps {
-  data: GeomatikaData;
+export interface GeomatikaData {
+  title: string;
+  serviceTitle: string;
+  description: string;
+  image: string;
+  buttonText: string;
 }
 
-export function GeomatikaSection({ data }: GeomatikaSectionProps) {
+const geomatikaData: GeomatikaData = {
+  title: 'GEOMATIKA',
+  serviceTitle: 'GEOSPATIAL',
+  description:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  image: '/images/geo2.jpg',
+  buttonText: 'See Details',
+};
+
+export default function GeomatikaLayanan() {
+  const [data, setData] = useState<GeomatikaData>(geomatikaData);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result: Service = await client.fetch(serviceByCategoryQuery, { category: 'geomatika' });
+        if (result) {
+          setData({
+            ...geomatikaData,
+            serviceTitle: result.title,
+            description: result.shortDescription || geomatikaData.description,
+            image: result.mainImage ? urlFor(result.mainImage).url() : geomatikaData.image,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching CMS data:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
-    <section className="relative w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 overflow-hidden">
+    <section className="relative w-full bg-white py-8 sm:py-10 md:py-12 lg:py-14 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}

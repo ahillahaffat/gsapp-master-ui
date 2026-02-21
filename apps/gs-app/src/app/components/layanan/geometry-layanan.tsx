@@ -4,15 +4,30 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { GeometryData, GeometryService } from './data';
 
-interface ServiceCardProps {
-  service: GeometryService;
-  buttonText: string;
-  index: number;
+export interface GeometryService {
+  id: number;
+  title: string;
+  image: string;
 }
 
-function ServiceCard({ service, buttonText, index }: ServiceCardProps) {
+export interface GeometryData {
+  title: string;
+  services: GeometryService[];
+  buttonText: string;
+}
+
+const geometryData: GeometryData = {
+  title: 'GEOMETRY',
+  services: [
+    { id: 1, title: 'Highway', image: '/images/geo1.jpg' },
+    { id: 2, title: 'Structure', image: '/images/geo2.jpg' },
+    { id: 3, title: 'Drainage', image: '/images/geo1.jpg' },
+  ],
+  buttonText: 'See Details',
+};
+
+function ServiceCard({ service, buttonText, index }: { service: GeometryService; buttonText: string; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -51,13 +66,9 @@ function ServiceCard({ service, buttonText, index }: ServiceCardProps) {
   );
 }
 
-interface GeometrySectionProps {
-  data: GeometryData;
-}
-
-export function GeometrySection({ data }: GeometrySectionProps) {
+export default function GeometryLayanan() {
   return (
-    <section className="relative w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 overflow-hidden">
+    <section className="relative w-full bg-white py-8 sm:py-10 md:py-12 lg:py-14 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
@@ -67,15 +78,15 @@ export function GeometrySection({ data }: GeometrySectionProps) {
           className="text-center mb-8 sm:mb-12 md:mb-16 text-2xl sm:text-3xl md:text-4xl font-bold underline"
           style={{ color: '#032972' }}
         >
-          {data.title}
+          {geometryData.title}
         </motion.h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8">
-          {data.services.map((service, index) => (
+          {geometryData.services.map((service, index) => (
             <ServiceCard
               key={service.id}
               service={service}
-              buttonText={data.buttonText}
+              buttonText={geometryData.buttonText}
               index={index}
             />
           ))}

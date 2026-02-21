@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import BoardOfDirectionsSection from './sections/boardOfDirections';
-import VisiMisiSection from './sections/visiMisi';
+import BoardDirections from '../components/struktur-organisasi/board-directions';
 
 export default function StrukturOrganisasiPage() {
   useEffect(() => {
@@ -11,8 +10,7 @@ export default function StrukturOrganisasiPage() {
 
   return (
     <>
-      <BoardOfDirectionsSection />
-      <VisiMisiSection />
+      <BoardDirections />
     </>
   );
 }
