@@ -38,7 +38,7 @@ function MemberCard({ member, index }: { member: TeamMember; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
 
-  const isEven = index % 2 === 0;
+  // const isEven = index % 2 === 0;
 
   return (
     <motion.div

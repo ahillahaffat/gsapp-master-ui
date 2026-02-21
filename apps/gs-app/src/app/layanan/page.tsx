@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import Image from 'next/image';
-import HeroIntroSection from './sections/heroIntro';
-import GeomatikaSectionWrapper from './sections/geomatika';
-import GeometrySectionWrapper from './sections/geometry';
+import HeroLayanan from '@/app/components/layanan/hero-layanan';
+import GeomatikaLayanan from '@/app/components/layanan/geomatika-layanan';
+import GeometryLayanan from '@/app/components/layanan/geometry-layanan';
 
 export default function LayananPage() {
   useEffect(() => {
@@ -13,20 +12,9 @@ export default function LayananPage() {
 
   return (
     <>
-      <section className="relative w-full bg-white overflow-hidden">
-        <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] min-h-[400px] sm:min-h-[500px] md:min-h-[600px]">
-          <Image
-            src="/images/hero.jpg"
-            alt="Layanan"
-            fill
-            priority
-            className="object-cover"
-          />
-        </div>
-      </section>
-      <HeroIntroSection />
-      <GeomatikaSectionWrapper />
-      <GeometrySectionWrapper />
+      <HeroLayanan />
+      <GeomatikaLayanan />
+      <GeometryLayanan />
     </>
   );
 }
