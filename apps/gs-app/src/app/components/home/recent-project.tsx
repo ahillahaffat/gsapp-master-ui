@@ -37,21 +37,21 @@ interface RecentProjectSectionProps {
 const defaultProjects: Project[] = [
   {
     id: 1,
-    title: 'Geometrika',
+    title: 'Geomatika', // Fallback menggunakan kategori layaknya di Sanity
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo2.jpg',
   },
   {
     id: 2,
-    title: 'Geometrika',
+    title: 'Geomatika',
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo1.jpg',
   },
   {
     id: 3,
-    title: 'Geometrika',
+    title: 'Geomatika',
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo2.jpg',

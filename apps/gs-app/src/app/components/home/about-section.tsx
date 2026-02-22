@@ -4,13 +4,28 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-interface AboutSectionProps {
-  title?: string;
+export interface AboutMission {
+  keyword: string;
+  description: string;
 }
 
+export interface AboutSectionData {
+  title: string;
+  description: string;
+  vision: string;
+  mission: AboutMission[];
+}
+
+const defaultAboutData: AboutSectionData = {
+  title: 'Profil Perusahaan',
+  description: 'Geometrika Studio merupakan perusahaan dibidang jasa konsultan independen konstruksi sekaligus mitra strategis dalam proyek infrastruktur yang berdiri tanggal 28 Oktober 2024 dengan nama resmi CV. Graha Sinergi Adiwidia. Kami Berfokus Pada Pengembangan Solusi Konstruksi Berbasis Teknologi yang Terintegrasi, dengan memberikan layanan yang didasarkan pada 2 Bidang Utama, Geometry dan Geometrika.',
+  vision: 'Menjadi mitra strategis terpercaya dalam industri konstruksi...',
+  mission: [],
+};
+
 export default function AboutSection({
-  title = 'Profil Perusahaan',
-}: AboutSectionProps) {
+  data = defaultAboutData,
+}: { data?: AboutSectionData }) {
   return (
     <section className="w-full py-24 px-6 lg:px-12 font-[family-name:var(--font-montserrat)]">
       <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-6 items-center">
@@ -21,28 +36,13 @@ export default function AboutSection({
           viewport={{ once: true }}
         >
           <h1 className="text-4xl lg:text-5xl font-bold text-[#0E2A66] mb-8 leading-tight">
-            {title}
+            {data.title}
           </h1>
 
-          <p className="text-base lg:text-lg leading-relaxed text-gray-800 mb-5 text-justify">
-            <span className="font-bold text-[#0E2A66]">
-              Geometrika Studio
-            </span>{' '}
-            merupakan perusahaan dibidang jasa konsultan independen konstruksi
-            sekaligus mitra strategis dalam proyek infrastruktur yang berdiri
-            tanggal 28 Oktober 2024 dengan nama resmi{' '}
-            <span className="font-bold text-[#0E2A66]">
-              CV. Graha Sinergi Adiwidia
-            </span>.
+          <p className="text-base lg:text-lg leading-relaxed text-gray-800 mb-5 text-justify whitespace-pre-wrap">
+            {data.description}
           </p>
 
-          <p className="text-base lg:text-lg leading-relaxed text-gray-800 text-justify">
-            Kami Berfokus Pada Pengembangan Solusi Konstruksi Berbasis
-            Teknologi yang Terintegrasi, dengan memberikan layanan yang
-            didasarkan pada 2 Bidang Utama,{' '}
-            <span className="font-bold text-[#1E5CC8]">Geometry</span> dan{' '}
-            <span className="font-bold text-[#0E2A66]">Geometrika</span>.
-          </p>
         </motion.div>
 
         <motion.div
