@@ -129,3 +129,15 @@ export interface TeamMemberSource {
   level?: number;
   bio?: string;
 }
+
+export const servicesByCategoryQuery = groq`
+  *[_type == "service" && category == $category] | order(_createdAt asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    mainImage,
+    shortDescription,
+    description
+  }
+`;

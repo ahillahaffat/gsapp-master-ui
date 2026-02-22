@@ -4,8 +4,6 @@ import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
-
 export interface Project {
     id: number;
     title: string;
@@ -17,8 +15,6 @@ export interface ProjectsSectionData {
     title: string;
     projects: Project[];
 }
-
-// ─── Data ──────────────────────────────────────────────────────────────────────
 
 export const projectsSectionData: ProjectsSectionData = {
     title: 'Beberapa Projek Kami\nDalam Sektor Geospastial',
@@ -46,8 +42,6 @@ export const projectsSectionData: ProjectsSectionData = {
         },
     ],
 };
-
-// ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function ProjectsSection() {
     const data = projectsSectionData;

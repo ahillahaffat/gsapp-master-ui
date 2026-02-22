@@ -3,8 +3,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
-
 export interface Discipline {
     title: string;
     items: string[];
@@ -15,8 +13,6 @@ export interface DisciplinesSectionData {
     leftColumn: Discipline[];
     rightColumn: Discipline[];
 }
-
-// ─── Data ──────────────────────────────────────────────────────────────────────
 
 export const disciplinesSectionData: DisciplinesSectionData = {
     title: 'Our Geospastial Disciplines',
@@ -66,8 +62,6 @@ export const disciplinesSectionData: DisciplinesSectionData = {
     ],
 };
 
-// ─── Sub-Component ─────────────────────────────────────────────────────────────
-
 function DisciplineList({ discipline, index }: { discipline: Discipline; index: number }) {
     return (
         <motion.div
@@ -107,8 +101,6 @@ function DisciplineList({ discipline, index }: { discipline: Discipline; index: 
         </motion.div>
     );
 }
-
-// ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function DisciplinesSection() {
     const data = disciplinesSectionData;

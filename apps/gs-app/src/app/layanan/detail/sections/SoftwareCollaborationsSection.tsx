@@ -4,8 +4,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
-
 export interface SoftwareCollaboration {
     id: number;
     name: string;
@@ -16,8 +14,6 @@ export interface SoftwareCollaborationsData {
     title: string;
     collaborations: SoftwareCollaboration[];
 }
-
-// ─── Data ──────────────────────────────────────────────────────────────────────
 
 export const softwareCollaborationsData: SoftwareCollaborationsData = {
     title: 'Software Collaborations',
@@ -30,8 +26,6 @@ export const softwareCollaborationsData: SoftwareCollaborationsData = {
         { id: 6, name: 'Partner', logo: '/images/aset.png' },
     ],
 };
-
-// ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function SoftwareCollaborationsSection() {
     const data = softwareCollaborationsData;
