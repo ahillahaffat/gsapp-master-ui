@@ -42,7 +42,6 @@ export default function AboutSection({
           <p className="text-base lg:text-lg leading-relaxed text-gray-800 mb-5 text-justify whitespace-pre-wrap">
             {data.description}
           </p>
-
         </motion.div>
 
         <motion.div

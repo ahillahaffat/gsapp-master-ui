@@ -76,8 +76,8 @@ export default function SolutionSection({
               key={item.key || index}
               onClick={() => setActive(index)}
               className={`flex-1 min-w-[100px] py-3 px-2 rounded-full text-sm lg:text-base font-semibold transition-all duration-300 ${active === index
-                  ? 'bg-[#0D2E6D]'
-                  : 'bg-transparent hover:bg-white/10'
+                ? 'bg-[#0D2E6D]'
+                : 'bg-transparent hover:bg-white/10'
                 }`}
             >
               {item.title.split(' ')[0]} {/* Use first word of title as key if missing */}

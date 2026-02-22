@@ -2,16 +2,17 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { urlFor } from '../../../lib/sanity.client';
 
-interface Project {
-  id: number;
+interface ProjectItem {
+  id: string;
   title: string;
   description: string;
   image: string;
 }
 
 interface ProjectCardProps {
-  project: Project;
+  project: ProjectItem;
   index: number;
 }
 
@@ -20,7 +21,7 @@ interface SectionTitleProps {
 }
 
 interface TimelineProps {
-  projects: Project[];
+  projects: ProjectItem[];
 }
 
 interface ShowcaseCardProps {
@@ -30,27 +31,35 @@ interface ShowcaseCardProps {
 
 interface RecentProjectSectionProps {
   title?: string;
-  projects?: Project[];
+  projects?: {
+    _id: string;
+    title: string;
+    slug: string;
+    category?: string;
+    client?: string;
+    completionDate?: string;
+    mainImage?: { asset: { _ref: string }; alt?: string };
+    description?: any[];
+  }[];
 }
 
-
-const defaultProjects: Project[] = [
+const fallbackProjects: ProjectItem[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Geomatika', // Fallback menggunakan kategori layaknya di Sanity
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo2.jpg',
   },
   {
-    id: 2,
+    id: '2',
     title: 'Geomatika',
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo1.jpg',
   },
   {
-    id: 3,
+    id: '3',
     title: 'Geomatika',
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
@@ -75,8 +84,6 @@ function DesktopTimelineLine({ containerRef }: { containerRef: React.RefObject<H
   );
 }
 
-// ─── Mobile: Animated Left Line ───────────────────────────────────────────────
-
 function MobileTimelineLine({ containerRef }: { containerRef: React.RefObject<HTMLDivElement> }) {
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -93,8 +100,6 @@ function MobileTimelineLine({ containerRef }: { containerRef: React.RefObject<HT
     </div>
   );
 }
-
-// ─── Shared Circle ────────────────────────────────────────────────────────────
 
 function TimelineCircle({ isInView, size = 'md' }: { isInView: boolean; size?: 'sm' | 'md' }) {
   const outer = size === 'sm' ? 'w-[40px] h-[40px]' : 'w-[44px] h-[44px]';
@@ -343,10 +348,28 @@ function ShowcaseCard({ image, text }: ShowcaseCardProps) {
   );
 }
 
+// Helper: extract first paragraph text from portable text blocks
+function extractDescription(blocks?: any[]): string {
+  if (!blocks || blocks.length === 0) return '';
+  const textBlock = blocks.find((b: any) => b._type === 'block');
+  if (!textBlock?.children) return '';
+  return textBlock.children.map((c: any) => c.text || '').join('');
+}
+
 export default function RecentProjectSection({
   title = 'Recent Project',
-  projects = defaultProjects,
+  projects = [],
 }: RecentProjectSectionProps) {
+  // Map CMS data to display format, or use fallback
+  const displayProjects: ProjectItem[] = projects.length > 0
+    ? projects.map((p) => ({
+      id: p._id,
+      title: p.title,
+      description: extractDescription(p.description) || `Proyek ${p.category || ''} ${p.client ? `untuk ${p.client}` : ''}`.trim(),
+      image: p.mainImage ? urlFor(p.mainImage).width(800).height(500).url() : '/images/geo2.jpg',
+    }))
+    : fallbackProjects;
+
   const showcaseText =
     'Geometrika Studio menghadirkan ekosistem layanan terpadu berbasis Building Information Modeling (BIM) untuk menghasilkan data dan informasi akurat, sehingga setiap desain, perencanaan, dan pengambilan keputusan sepanjang siklus pekerjaan dapat dilakukan secara lebih cepat, tepat, dan efisien.';
 
@@ -354,7 +377,7 @@ export default function RecentProjectSection({
     <section className="relative w-full bg-white py-24 px-4 md:px-[87px] overflow-hidden">
       <div className="max-w-[1337px] mx-auto">
         <SectionTitle title={title} />
-        <Timeline projects={projects} />
+        <Timeline projects={displayProjects} />
         <ShowcaseCard image="/images/hero.jpg" text={showcaseText} />
       </div>
     </section>
