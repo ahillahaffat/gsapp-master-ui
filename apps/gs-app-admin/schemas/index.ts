@@ -2,7 +2,11 @@ import article from './article';
 import author from './author';
 import category from './category';
 import blockContent from './blockContent';
-import companyProfile from './companyProfile';
+import companyInfo from './companyInfo';
+import companyVision from './companyVision';
+import companyMission from './companyMission';
+import companyValues from './companyValues';
+import companyContact from './companyContact';
 import partner from './partner';
 import teamMember from './teamMember';
 import service from './service';
@@ -13,7 +17,11 @@ export const schemaTypes = [
     author,
     category,
     blockContent,
-    companyProfile,
+    companyInfo,
+    companyVision,
+    companyMission,
+    companyValues,
+    companyContact,
     partner,
     teamMember,
     service,

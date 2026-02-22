@@ -1,25 +1,47 @@
 'use client';
 
 import React, { useState } from 'react';
-// import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { urlFor } from '../../../lib/sanity.client';
 
-const services = [
-  {
-    key: 'BIM',
-    title: 'BIM - Technologies',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend magna vitae pharetra finibus. Integer hendrerit vehicula magna.',
-    image: '/images/geo1.jpg',
-  },
-  { key: 'GEOMATIKA', title: 'Geomatika', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend magna vitae pharetra finibus. Integer hendrerit vehicula magna.', image: '/images/geo1.jpg' },
-  { key: 'GEOMETRY', title: 'Geometry', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend magna vitae pharetra finibus. Integer hendrerit vehicula magna.', image: '/images/geo2.jpg' },
-  { key: 'TRAINING', title: 'Training', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend magna vitae pharetra finibus. Integer hendrerit vehicula magna.', image: '/images/geo2.jpg' },
+interface ServiceItem {
+  key: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+interface SolutionSectionProps {
+  services?: {
+    _id: string;
+    title: string;
+    slug: string;
+    category: string;
+    mainImage?: { asset: { _ref: string }; alt?: string };
+    shortDescription?: string;
+  }[];
+}
+
+// Fallback data jika CMS kosong
+const fallbackServices: ServiceItem[] = [
+  { key: 'BIM', title: 'BIM - Technologies', description: 'Layanan Building Information Modeling untuk proyek konstruksi modern.', image: '/images/geo1.jpg' },
+  { key: 'GEOMATIKA', title: 'Geomatika', description: 'Layanan geospasial dan pemetaan berbasis teknologi terkini.', image: '/images/geo1.jpg' },
+  { key: 'GEOMETRY', title: 'Geometry', description: 'Layanan desain struktur dan perencanaan geometri konstruksi.', image: '/images/geo2.jpg' },
 ];
 
-export default function ServiceSection() {
+export default function ServiceSection({ services = [] }: SolutionSectionProps) {
+  // Map CMS services to display format, or use fallback
+  const displayServices: ServiceItem[] = services.length > 0
+    ? services.map((s) => ({
+      key: s.category?.toUpperCase() || s.title.toUpperCase(),
+      title: s.title,
+      description: s.shortDescription || '',
+      image: s.mainImage ? urlFor(s.mainImage).width(800).height(600).url() : '/images/geo1.jpg',
+    }))
+    : fallbackServices;
+
   const [active, setActive] = useState(0);
-  const service = services[active];
+  const service = displayServices[active];
 
   return (
     <section className="w-full bg-[#264F9A] py-20 px-6 lg:px-20 text-white">
@@ -52,15 +74,14 @@ export default function ServiceSection() {
           </div>
         </div>
         <div className="mt-14 bg-[#1E63C6] rounded-full p-2 flex justify-between">
-          {services.map((item, index) => (
+          {displayServices.map((item, index) => (
             <button
               key={item.key}
               onClick={() => setActive(index)}
-              className={`flex-1 py-3 rounded-full text-sm lg:text-base font-semibold transition-all duration-300 ${
-                active === index
+              className={`flex-1 py-3 rounded-full text-sm lg:text-base font-semibold transition-all duration-300 ${active === index
                   ? 'bg-[#0D2E6D]'
                   : 'bg-transparent hover:bg-white/10'
-              }`}
+                }`}
             >
               {item.key}
             </button>
