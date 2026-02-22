@@ -1,14 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { client, urlFor } from '../../../lib/sanity.client';
+import { servicesByCategoryQuery, Service } from '../../../lib/sanity.queries';
 
 export interface GeometryService {
-  id: number;
+  id: string;
   title: string;
   image: string;
+  slug?: string;
 }
 
 export interface GeometryData {
@@ -17,12 +20,12 @@ export interface GeometryData {
   buttonText: string;
 }
 
-const geometryData: GeometryData = {
+const fallbackData: GeometryData = {
   title: 'GEOMETRY',
   services: [
-    { id: 1, title: 'Highway', image: '/images/geo1.jpg' },
-    { id: 2, title: 'Structure', image: '/images/geo2.jpg' },
-    { id: 3, title: 'Drainage', image: '/images/geo1.jpg' },
+    { id: '1', title: 'Highway', image: '/images/geo1.jpg' },
+    { id: '2', title: 'Structure', image: '/images/geo2.jpg' },
+    { id: '3', title: 'Drainage', image: '/images/geo1.jpg' },
   ],
   buttonText: 'See Details',
 };
@@ -67,6 +70,30 @@ function ServiceCard({ service, buttonText, index }: { service: GeometryService;
 }
 
 export default function GeometryLayanan() {
+  const [data, setData] = useState<GeometryData>(fallbackData);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const results: Service[] = await client.fetch(servicesByCategoryQuery, { category: 'geometry' });
+        if (results && results.length > 0) {
+          setData({
+            ...fallbackData,
+            services: results.map((s) => ({
+              id: s._id,
+              title: s.title,
+              image: s.mainImage ? urlFor(s.mainImage).width(600).height(450).url() : '/images/geo1.jpg',
+              slug: s.slug,
+            })),
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching geometry services:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <section className="relative w-full bg-white py-8 sm:py-10 md:py-12 lg:py-14 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -78,15 +105,15 @@ export default function GeometryLayanan() {
           className="text-center mb-8 sm:mb-12 md:mb-16 text-2xl sm:text-3xl md:text-4xl font-bold underline"
           style={{ color: '#032972' }}
         >
-          {geometryData.title}
+          {data.title}
         </motion.h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8">
-          {geometryData.services.map((service, index) => (
+          {data.services.map((service, index) => (
             <ServiceCard
               key={service.id}
               service={service}
-              buttonText={geometryData.buttonText}
+              buttonText={data.buttonText}
               index={index}
             />
           ))}
