@@ -130,6 +130,108 @@ export interface TeamMemberSource {
   bio?: string;
 }
 
+// ─── Company Profile Queries (Singletons) ─────────────────────────────────────
+
+export const companyInfoQuery = groq`
+  *[_type == "companyInfo"][0] {
+    name,
+    tagline
+  }
+`;
+
+export interface CompanyInfo {
+  name: string;
+  tagline?: string;
+}
+
+export const companyVisionQuery = groq`
+  *[_type == "companyVision"][0] {
+    vision
+  }
+`;
+
+export interface CompanyVision {
+  vision: string;
+}
+
+export const companyMissionQuery = groq`
+  *[_type == "companyMission"][0] {
+    mission[] {
+      keyword,
+      description
+    }
+  }
+`;
+
+export interface CompanyMission {
+  mission: { keyword: string; description: string }[];
+}
+
+export const companyValuesQuery = groq`
+  *[_type == "companyValues"][0] {
+    values[] {
+      title,
+      description
+    }
+  }
+`;
+
+export interface CompanyValues {
+  values: { title: string; description: string }[];
+}
+
+export const companyContactQuery = groq`
+  *[_type == "companyContact"][0] {
+    address,
+    email,
+    phone,
+    mapsEmbedUrl
+  }
+`;
+
+export interface CompanyContact {
+  address?: string;
+  email?: string;
+  phone?: string;
+  mapsEmbedUrl?: string;
+}
+
+// ─── Partners / Clients Query ──────────────────────────────────────────────────
+
+export const allPartnersQuery = groq`
+  *[_type == "partner"] | order(_createdAt asc) {
+    _id,
+    name,
+    logo,
+    website,
+    description
+  }
+`;
+
+export interface Partner {
+  _id: string;
+  name: string;
+  logo: {
+    asset: { _ref: string };
+  };
+  website?: string;
+  description?: string;
+}
+
+// ─── All Services Query ────────────────────────────────────────────────────────
+
+export const allServicesQuery = groq`
+  *[_type == "service"] | order(_createdAt asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    mainImage,
+    shortDescription,
+    description
+  }
+`;
+
 export const servicesByCategoryQuery = groq`
   *[_type == "service" && category == $category] | order(_createdAt asc) {
     _id,
@@ -141,3 +243,69 @@ export const servicesByCategoryQuery = groq`
     description
   }
 `;
+
+// ─── Projects Query ────────────────────────────────────────────────────────────
+
+export const allProjectsQuery = groq`
+  *[_type == "project"] | order(completionDate desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    client,
+    completionDate,
+    mainImage,
+    description
+  }
+`;
+
+export const recentProjectsQuery = groq`
+  *[_type == "project"] | order(completionDate desc)[0...3] {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    client,
+    completionDate,
+    mainImage,
+    description
+  }
+`;
+
+export const projectBySlugQuery = groq`
+  *[_type == "project" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    client,
+    completionDate,
+    mainImage,
+    gallery[] {
+      asset,
+      caption
+    },
+    description
+  }
+`;
+
+export interface Project {
+  _id: string;
+  title: string;
+  slug: string;
+  category?: string;
+  client?: string;
+  completionDate?: string;
+  mainImage?: {
+    asset: { _ref: string };
+    alt?: string;
+  };
+  description?: any[];
+}
+
+export interface ProjectDetail extends Project {
+  gallery?: {
+    asset: { _ref: string };
+    caption?: string;
+  }[];
+}

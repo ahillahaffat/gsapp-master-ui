@@ -5,11 +5,11 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 interface AboutSectionProps {
-  title?: string;
+  companyName?: string;
 }
 
 export default function AboutSection({
-  title = 'Profil Perusahaan',
+  companyName = 'Geometrika Studio',
 }: AboutSectionProps) {
   return (
     <section className="w-full py-24 px-6 lg:px-12 font-[family-name:var(--font-montserrat)]">
@@ -21,12 +21,12 @@ export default function AboutSection({
           viewport={{ once: true }}
         >
           <h1 className="text-4xl lg:text-5xl font-bold text-[#0E2A66] mb-8 leading-tight">
-            {title}
+            Profil Perusahaan
           </h1>
 
           <p className="text-base lg:text-lg leading-relaxed text-gray-800 mb-5 text-justify">
             <span className="font-bold text-[#0E2A66]">
-              Geometrika Studio
+              {companyName}
             </span>{' '}
             merupakan perusahaan dibidang jasa konsultan independen konstruksi
             sekaligus mitra strategis dalam proyek infrastruktur yang berdiri
@@ -41,7 +41,7 @@ export default function AboutSection({
             Teknologi yang Terintegrasi, dengan memberikan layanan yang
             didasarkan pada 2 Bidang Utama,{' '}
             <span className="font-bold text-[#1E5CC8]">Geometry</span> dan{' '}
-            <span className="font-bold text-[#0E2A66]">Geometrika</span>.
+            <span className="font-bold text-[#0E2A66]">Geomatika</span>.
           </p>
         </motion.div>
 
