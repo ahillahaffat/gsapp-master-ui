@@ -5,7 +5,6 @@ export default defineType({
     title: 'Recent Project Section (Beranda)',
     type: 'document',
     fields: [
-        defineField({ name: 'title', title: 'Judul', type: 'string' }),
         defineField({ name: 'showcaseText', title: 'Teks Showcase', type: 'text' }),
         defineField({
             name: 'maxItems',

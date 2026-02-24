@@ -5,7 +5,6 @@ export default defineType({
     title: 'Solution Section (Beranda)',
     type: 'document',
     fields: [
-        defineField({ name: 'title', title: 'Judul', type: 'string' }),
         defineField({
             name: 'solutions',
             title: 'Daftar Solusi',

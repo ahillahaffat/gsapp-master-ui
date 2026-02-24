@@ -4,23 +4,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-export interface AboutMission {
-  keyword: string;
-  description: string;
-}
-
 export interface AboutSectionData {
-  title: string;
+  title?: string; // no longer heavily utilized, kept for type compat if needed
   description: string;
-  vision: string;
-  mission: AboutMission[];
+  image?: string;
 }
 
 const defaultAboutData: AboutSectionData = {
-  title: 'Profil Perusahaan',
-  description: 'Geometrika Studio merupakan perusahaan dibidang jasa konsultan independen konstruksi sekaligus mitra strategis dalam proyek infrastruktur yang berdiri tanggal 28 Oktober 2024 dengan nama resmi CV. Graha Sinergi Adiwidia. Kami Berfokus Pada Pengembangan Solusi Konstruksi Berbasis Teknologi yang Terintegrasi, dengan memberikan layanan yang didasarkan pada 2 Bidang Utama, Geometry dan Geometrika.',
-  vision: 'Menjadi mitra strategis terpercaya dalam industri konstruksi...',
-  mission: [],
+  description: 'Geometrika Studio merupakan perusahaan dibidang jasa konsultan independen konstruksi...',
 };
 
 export default function AboutSection({
@@ -36,7 +27,7 @@ export default function AboutSection({
           viewport={{ once: true }}
         >
           <h1 className="text-4xl lg:text-5xl font-bold text-[#0E2A66] mb-8 leading-tight">
-            {data.title}
+            Profil Perusahaan
           </h1>
 
           <p className="text-base lg:text-lg leading-relaxed text-gray-800 mb-5 text-justify whitespace-pre-wrap">
@@ -52,11 +43,11 @@ export default function AboutSection({
           className="flex justify-center lg:justify-center"
         >
           <Image
-            src="/images/geometrika.png"
-            alt="Geometrika Logo"
-            width={220}
-            height={220}
-            className="w-40 lg:w-52 h-auto"
+            src={data.image || "/images/geometrika.png"}
+            alt="Profil Perusahaan"
+            width={320}
+            height={320}
+            className="w-48 lg:w-64 h-auto object-contain"
             priority
           />
         </motion.div>

@@ -61,7 +61,7 @@ export default function GeomatikaLayanan({ data = defaultGeomatikaData }: { data
             </div>
             <div className="mt-auto pt-6 sm:pt-7 md:pt-8">
               <Link
-                href="/layanan/detail"
+                href="/layanan/detail?type=geomatika"
                 className="inline-block px-6 sm:px-7 md:px-8 py-2.5 sm:py-3 rounded-full text-white font-semibold text-sm sm:text-base transition-opacity hover:opacity-90"
                 style={{ backgroundColor: '#032972' }}
               >

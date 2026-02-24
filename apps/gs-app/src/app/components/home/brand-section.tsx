@@ -230,13 +230,13 @@ export default function BrandSection({
     <section className="relative w-full bg-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
       <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-10 sm:gap-12 md:gap-14">
         <BrandSectionContent
-          title={data.clientsTitle || "Our Clients"}
+          title={"Our Clients"}
           description={data.clientsDescription || "Komitmen menjalin kemitraan strategis dengan berbagai pihak terpercaya demi menciptakan sinergi yang kuat dan berkelanjutan"}
           brands={clients}
           type="client"
         />
         <BrandSectionContent
-          title={data.partnersTitle || "Our Partners"}
+          title={"Our Partners"}
           description={data.partnersDescription}
           brands={partners}
           type="partner"

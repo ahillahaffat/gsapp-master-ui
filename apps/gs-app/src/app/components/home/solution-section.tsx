@@ -42,7 +42,7 @@ export default function SolutionSection({
     <section className="w-full bg-[#264F9A] py-20 px-6 lg:px-20 text-white">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-4xl lg:text-5xl font-bold mb-14">
-          {data.title || 'Layanan Kami'}
+          Layanan Kami
         </h2>
 
         <div className="bg-[#1E63C6] rounded-3xl overflow-hidden flex flex-col lg:flex-row items-stretch">

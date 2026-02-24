@@ -12,7 +12,8 @@ const singletonTypes = new Set([
   "homeAboutSection",
   "homeSolutionSection",
   "homeRecentProjectSection",
-  "homeBrandSection",
+  "homeClientSection",
+  "homePartnerSection",
   "layananHeroSection",
   "layananGeomatikaSection",
   "layananGeometrySection"
@@ -56,9 +57,13 @@ export default defineConfig({
                       .id("homeRecentProjectSection")
                       .child(S.document().schemaType("homeRecentProjectSection").documentId("homeRecentProjectSection")),
                     S.listItem()
-                      .title("Brand Section")
-                      .id("homeBrandSection")
-                      .child(S.document().schemaType("homeBrandSection").documentId("homeBrandSection")),
+                      .title("Client Section")
+                      .id("homeClientSection")
+                      .child(S.document().schemaType("homeClientSection").documentId("homeClientSection")),
+                    S.listItem()
+                      .title("Partner Section")
+                      .id("homePartnerSection")
+                      .child(S.document().schemaType("homePartnerSection").documentId("homePartnerSection")),
                   ])
               ),
 
@@ -91,6 +96,10 @@ export default defineConfig({
               .title("Portofolio Proyek")
               .schemaType("portfolioProject")
               .child(S.documentTypeList("portfolioProject").title("Portofolio Proyek")),
+            S.listItem()
+              .title("Tim / Struktur Organisasi")
+              .schemaType("teamMember")
+              .child(S.documentTypeList("teamMember").title("Tim / Struktur Organisasi")),
           ]),
     }),
   ],
