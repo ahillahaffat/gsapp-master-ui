@@ -52,7 +52,7 @@ async function getHomePageData() {
     // Map Solutions
     const solutionsData = solutionRes ? {
       title: "Layanan Kami",
-      solutions: solutionRes.solutions ? solutionRes.solutions.map((s: any, i: number) => ({
+      solutions: solutionRes.solutions ? solutionRes.solutions.map((s: { title?: string, description?: string, image?: any }, i: number) => ({
         key: s.title ? s.title.split(' ')[0] : String(i),
         title: s.title || '',
         description: s.description || '',
@@ -64,13 +64,13 @@ async function getHomePageData() {
     const brandData = (clientRes || partnerRes) ? {
       clientsTitle: "Our Clients",
       clientsDescription: clientRes?.description || '',
-      clientsList: clientRes?.brands ? clientRes.brands.map((b: any) => ({
+      clientsList: clientRes?.brands ? clientRes.brands.map((b: { name?: string, logo?: any }) => ({
         name: b.name || '',
         image: b.logo ? urlFor(b.logo).url() : '/images/1.png',
       })) : [],
       partnersTitle: "Our Partners", // Hardcoded
       partnersDescription: partnerRes?.description || "",
-      partnersList: partnerRes?.partners ? partnerRes.partners.map((p: any) => ({
+      partnersList: partnerRes?.partners ? partnerRes.partners.map((p: { name?: string, logo?: any }) => ({
         name: p.name || '',
         image: p.logo ? urlFor(p.logo).url() : '/images/7.png',
       })) : []

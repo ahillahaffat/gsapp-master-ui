@@ -5,10 +5,15 @@ import { PortableText } from '@portabletext/react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
+interface TypedObject {
+    _type: string;
+    [key: string]: unknown;
+}
+
 interface DynamicDetailProps {
     title: string;
     image?: string;
-    detail?: any[]; // PortableText blocks
+    detail?: TypedObject[]; 
 }
 
 export default function DynamicDetailRenderer({ title, image, detail }: DynamicDetailProps) {
