@@ -144,6 +144,45 @@ export interface CompanyInfo {
   tagline?: string;
 }
 
+// ─── Home Page Sections ────────────────────────────────────────────────────────
+export interface HomeHeroSection {
+  title?: string;
+  subtitle?: string;
+  tagline?: string;
+  backgroundImage?: any;
+}
+
+export interface HomeAboutSection {
+  description?: string;
+  image?: any;
+}
+
+export interface HomeSolutionSection {
+  solutions?: { title?: string; description?: string; image?: any }[];
+}
+
+export interface HomeRecentProjectSection {
+  showcaseText?: string;
+  maxItems?: number;
+}
+
+export interface HomeClientSection {
+  description?: string;
+  brands?: { name?: string; logo?: any }[];
+}
+
+export interface HomePartnerSection {
+  description?: string;
+  partners?: { name?: string; logo?: any }[];
+}
+
+export interface LayananSection {
+  _id: string;
+  title?: string;
+  description?: string;
+  image?: any;
+}
+
 export const companyVisionQuery = groq`
   *[_type == "companyVision"][0] {
     vision

@@ -1,5 +1,13 @@
-import { client } from "@/lib/sanity.client";
-import { urlFor } from "@/lib/sanity.client";
+import { client, urlFor } from "@/lib/sanity.client";
+import {
+  HomeHeroSection,
+  HomeAboutSection,
+  HomeSolutionSection,
+  HomeRecentProjectSection,
+  HomeClientSection,
+  HomePartnerSection,
+  LayananSection
+} from "@/lib/sanity.queries";
 import AboutSection from "./components/home/about-section";
 import BrandSection from "./components/home/brand-section";
 import Hero from "./components/home/hero-beranda";
@@ -20,14 +28,14 @@ async function getHomePageData() {
     const layananGeometryQuery = `*[_type == "layananGeometrySection"][0]`;
 
     const [heroRes, aboutRes, solutionRes, projectSectionRes, clientRes, partnerRes, geomatikaRes, geometryRes] = await Promise.all([
-      client.fetch(heroQuery),
-      client.fetch(aboutQuery),
-      client.fetch(solutionQuery),
-      client.fetch(projectSectionQuery),
-      client.fetch(clientQuery),
-      client.fetch(partnerQuery),
-      client.fetch(layananGeomatikaQuery),
-      client.fetch(layananGeometryQuery),
+      client.fetch<HomeHeroSection>(heroQuery),
+      client.fetch<HomeAboutSection>(aboutQuery),
+      client.fetch<HomeSolutionSection>(solutionQuery),
+      client.fetch<HomeRecentProjectSection>(projectSectionQuery),
+      client.fetch<HomeClientSection>(clientQuery),
+      client.fetch<HomePartnerSection>(partnerQuery),
+      client.fetch<LayananSection>(layananGeomatikaQuery),
+      client.fetch<LayananSection>(layananGeometryQuery),
     ]);
 
     // Combine Layanan pages into dynamic projects array
@@ -52,7 +60,7 @@ async function getHomePageData() {
     // Map Solutions
     const solutionsData = solutionRes ? {
       title: "Layanan Kami",
-      solutions: solutionRes.solutions ? solutionRes.solutions.map((s: { title?: string, description?: string, image?: any }, i: number) => ({
+      solutions: solutionRes.solutions ? solutionRes.solutions.map((s, i: number) => ({
         key: s.title ? s.title.split(' ')[0] : String(i),
         title: s.title || '',
         description: s.description || '',
@@ -64,13 +72,13 @@ async function getHomePageData() {
     const brandData = (clientRes || partnerRes) ? {
       clientsTitle: "Our Clients",
       clientsDescription: clientRes?.description || '',
-      clientsList: clientRes?.brands ? clientRes.brands.map((b: { name?: string, logo?: any }) => ({
+      clientsList: clientRes?.brands ? clientRes.brands.map((b) => ({
         name: b.name || '',
         image: b.logo ? urlFor(b.logo).url() : '/images/1.png',
       })) : [],
       partnersTitle: "Our Partners", // Hardcoded
       partnersDescription: partnerRes?.description || "",
-      partnersList: partnerRes?.partners ? partnerRes.partners.map((p: { name?: string, logo?: any }) => ({
+      partnersList: partnerRes?.partners ? partnerRes.partners.map((p) => ({
         name: p.name || '',
         image: p.logo ? urlFor(p.logo).url() : '/images/7.png',
       })) : []
@@ -78,6 +86,7 @@ async function getHomePageData() {
 
     const mappedAboutRes = aboutRes ? {
       ...aboutRes,
+      description: aboutRes.description || '',
       image: aboutRes.image ? urlFor(aboutRes.image).url() : undefined
     } : null;
 
@@ -120,7 +129,7 @@ export default async function Home() {
         projects={data.projects && data.projects.length > 0 ? data.projects : undefined}
       />
       <BrandSection
-        data={data.brand?.clientsList?.length > 0 ? data.brand : undefined}
+        data={(data.brand?.clientsList?.length ?? 0) > 0 ? data.brand : undefined}
       />
     </>
   );
