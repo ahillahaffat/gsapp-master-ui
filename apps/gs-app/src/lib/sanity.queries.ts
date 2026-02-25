@@ -1,5 +1,11 @@
 import { groq } from 'next-sanity';
 
+export interface SanityImage {
+  asset: { _ref: string };
+  hotspot?: { x: number; y: number; height: number; width: number };
+  crop?: { top: number; bottom: number; left: number; right: number };
+  alt?: string;
+}
 // Get all articles, sorted by publishedAt date
 export const allArticlesQuery = groq`
   *[_type == "article"] | order(publishedAt desc) {
@@ -52,10 +58,7 @@ export interface Article {
   slug: { current: string };
   excerpt?: string;
   publishedAt?: string;
-  mainImage?: {
-    asset: { _ref: string };
-    alt?: string;
-  };
+  mainImage?: SanityImage;
   author?: string;
   categories?: string[];
 }
@@ -66,15 +69,12 @@ export interface ArticleDetail {
   slug: { current: string };
   excerpt?: string;
   publishedAt?: string;
-  mainImage?: {
-    asset: { _ref: string };
-    alt?: string;
-  };
+  mainImage?: SanityImage;
   categories?: string[];
   body?: any[];
   author?: {
     name: string;
-    image?: any;
+    image?: SanityImage;
     bio?: string;
   };
 }
@@ -96,10 +96,7 @@ export interface Service {
   title: string;
   slug: string;
   category: string;
-  mainImage?: {
-    asset: { _ref: string };
-    alt?: string;
-  };
+  mainImage?: SanityImage;
   shortDescription?: string;
   description?: any[];
 }
@@ -121,10 +118,7 @@ export interface TeamMemberSource {
   _id: string;
   name: string;
   position: string;
-  photo?: {
-    asset: { _ref: string };
-    alt?: string;
-  };
+  photo?: SanityImage;
   division?: string;
   level?: number;
   bio?: string;
@@ -142,6 +136,45 @@ export const companyInfoQuery = groq`
 export interface CompanyInfo {
   name: string;
   tagline?: string;
+}
+
+// ─── Home Page Sections ────────────────────────────────────────────────────────
+export interface HomeHeroSection {
+  title?: string;
+  subtitle?: string;
+  tagline?: string;
+  backgroundImage?: SanityImage;
+}
+
+export interface HomeAboutSection {
+  description?: string;
+  image?: SanityImage;
+}
+
+export interface HomeSolutionSection {
+  solutions?: { title?: string; description?: string; image?: SanityImage }[];
+}
+
+export interface HomeRecentProjectSection {
+  showcaseText?: string;
+  maxItems?: number;
+}
+
+export interface HomeClientSection {
+  description?: string;
+  brands?: { name?: string; logo?: SanityImage }[];
+}
+
+export interface HomePartnerSection {
+  description?: string;
+  partners?: { name?: string; logo?: SanityImage }[];
+}
+
+export interface LayananSection {
+  _id: string;
+  title?: string;
+  description?: string;
+  image?: SanityImage;
 }
 
 export const companyVisionQuery = groq`
@@ -211,9 +244,7 @@ export const allPartnersQuery = groq`
 export interface Partner {
   _id: string;
   name: string;
-  logo: {
-    asset: { _ref: string };
-  };
+  logo: SanityImage;
   website?: string;
   description?: string;
 }
@@ -296,16 +327,10 @@ export interface Project {
   category?: string;
   client?: string;
   completionDate?: string;
-  mainImage?: {
-    asset: { _ref: string };
-    alt?: string;
-  };
+  mainImage?: SanityImage;
   description?: any[];
 }
 
 export interface ProjectDetail extends Project {
-  gallery?: {
-    asset: { _ref: string };
-    caption?: string;
-  }[];
+  gallery?: (SanityImage & { caption?: string })[];
 }

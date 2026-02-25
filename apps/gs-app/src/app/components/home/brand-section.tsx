@@ -37,10 +37,7 @@ interface BrandSectionContentProps {
   type: 'client' | 'partner';
 }
 
-interface BrandSectionProps {
-  clientsList?: Brand[];
-  partnersList?: Brand[];
-}
+// interfaces removed
 
 const defaultClientsList: Brand[] = [
   { image: '/images/1.png', name: 'Client 1' },
@@ -205,22 +202,43 @@ function BrandSectionContent({ title, description, brands, type }: BrandSectionC
   );
 }
 
+export interface BrandSectionData {
+  clientsTitle: string;
+  clientsDescription: string;
+  clientsList: Brand[];
+  partnersTitle: string;
+  partnersDescription: string;
+  partnersList: Brand[];
+}
+
+const defaultBrandData: BrandSectionData = {
+  clientsTitle: "Our Clients",
+  clientsDescription: "Komitmen menjalin kemitraan strategis dengan berbagai pihak terpercaya demi menciptakan sinergi yang kuat dan berkelanjutan",
+  clientsList: defaultClientsList,
+  partnersTitle: "Our Partners",
+  partnersDescription: "",
+  partnersList: defaultPartnersList,
+};
+
 export default function BrandSection({
-  clientsList = defaultClientsList,
-  partnersList = defaultPartnersList,
-}: BrandSectionProps) {
+  data = defaultBrandData,
+}: { data?: BrandSectionData }) {
+  const clients = data.clientsList?.length > 0 ? data.clientsList : defaultClientsList;
+  const partners = data.partnersList?.length > 0 ? data.partnersList : defaultPartnersList;
+
   return (
     <section className="relative w-full bg-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
       <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-10 sm:gap-12 md:gap-14">
         <BrandSectionContent
-          title="Our Clients"
-          description="Komitmen menjalin kemitraan strategis dengan berbagai pihak terpercaya demi menciptakan sinergi yang kuat dan berkelanjutan"
-          brands={clientsList}
+          title={"Our Clients"}
+          description={data.clientsDescription || "Komitmen menjalin kemitraan strategis dengan berbagai pihak terpercaya demi menciptakan sinergi yang kuat dan berkelanjutan"}
+          brands={clients}
           type="client"
         />
         <BrandSectionContent
-          title="Our Partners"
-          brands={partnersList}
+          title={"Our Partners"}
+          description={data.partnersDescription}
+          brands={partners}
           type="partner"
         />
       </div>

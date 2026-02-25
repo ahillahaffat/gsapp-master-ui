@@ -4,13 +4,19 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-interface AboutSectionProps {
-  companyName?: string;
+export interface AboutSectionData {
+  title?: string; // no longer heavily utilized, kept for type compat if needed
+  description: string;
+  image?: string;
 }
 
+const defaultAboutData: AboutSectionData = {
+  description: 'Geometrika Studio merupakan perusahaan dibidang jasa konsultan independen konstruksi...',
+};
+
 export default function AboutSection({
-  companyName = 'Geometrika Studio',
-}: AboutSectionProps) {
+  data = defaultAboutData,
+}: { data?: AboutSectionData }) {
   return (
     <section className="w-full py-24 px-6 lg:px-12 font-[family-name:var(--font-montserrat)]">
       <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-6 items-center">
@@ -24,24 +30,8 @@ export default function AboutSection({
             Profil Perusahaan
           </h1>
 
-          <p className="text-base lg:text-lg leading-relaxed text-gray-800 mb-5 text-justify">
-            <span className="font-bold text-[#0E2A66]">
-              {companyName}
-            </span>{' '}
-            merupakan perusahaan dibidang jasa konsultan independen konstruksi
-            sekaligus mitra strategis dalam proyek infrastruktur yang berdiri
-            tanggal 28 Oktober 2024 dengan nama resmi{' '}
-            <span className="font-bold text-[#0E2A66]">
-              CV. Graha Sinergi Adiwidia
-            </span>.
-          </p>
-
-          <p className="text-base lg:text-lg leading-relaxed text-gray-800 text-justify">
-            Kami Berfokus Pada Pengembangan Solusi Konstruksi Berbasis
-            Teknologi yang Terintegrasi, dengan memberikan layanan yang
-            didasarkan pada 2 Bidang Utama,{' '}
-            <span className="font-bold text-[#1E5CC8]">Geometry</span> dan{' '}
-            <span className="font-bold text-[#0E2A66]">Geomatika</span>.
+          <p className="text-base lg:text-lg leading-relaxed text-gray-800 mb-5 text-justify whitespace-pre-wrap">
+            {data.description}
           </p>
         </motion.div>
 
@@ -53,11 +43,11 @@ export default function AboutSection({
           className="flex justify-center lg:justify-center"
         >
           <Image
-            src="/images/geometrika.png"
-            alt="Geometrika Logo"
-            width={220}
-            height={220}
-            className="w-40 lg:w-52 h-auto"
+            src={data.image || "/images/geometrika.png"}
+            alt="Profil Perusahaan"
+            width={320}
+            height={320}
+            className="w-48 lg:w-64 h-auto object-contain"
             priority
           />
         </motion.div>

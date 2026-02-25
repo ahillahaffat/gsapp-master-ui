@@ -1,51 +1,136 @@
-import { client, urlFor } from '../lib/sanity.client';
+import { client, urlFor } from "@/lib/sanity.client";
 import {
-  companyInfoQuery,
-  CompanyInfo,
-  allServicesQuery,
-  Service,
-  recentProjectsQuery,
-  Project,
-  allPartnersQuery,
-  Partner,
-} from '../lib/sanity.queries';
+  HomeHeroSection,
+  HomeAboutSection,
+  HomeSolutionSection,
+  HomeRecentProjectSection,
+  HomeClientSection,
+  HomePartnerSection,
+  LayananSection
+} from "@/lib/sanity.queries";
+import AboutSection from "./components/home/about-section";
+import BrandSection from "./components/home/brand-section";
+import Hero from "./components/home/hero-beranda";
+import SolutionSection from "./components/home/solution-section";
+import RecentProjectSection from "./components/home/recent-project";
 
-import AboutSection from './components/home/about-section';
-import BrandSection from './components/home/brand-section';
-import Hero from './components/home/hero-beranda';
-import SolutionSection from './components/home/solution-section';
-import RecentProjectSection from './components/home/recent-project';
+export const revalidate = 60; // revalidate this page every 60 seconds
 
-export const revalidate = 60;
+async function getHomePageData() {
+  try {
+    const heroQuery = `*[_type == "homeHeroSection"][0]`;
+    const aboutQuery = `*[_type == "homeAboutSection"][0]`;
+    const solutionQuery = `*[_type == "homeSolutionSection"][0]`;
+    const projectSectionQuery = `*[_type == "homeRecentProjectSection"][0]`;
+    const clientQuery = `*[_type == "homeClientSection"][0]`;
+    const partnerQuery = `*[_type == "homePartnerSection"][0]`;
+    const layananGeomatikaQuery = `*[_type == "layananGeomatikaSection"][0]`;
+    const layananGeometryQuery = `*[_type == "layananGeometrySection"][0]`;
+
+    const [heroRes, aboutRes, solutionRes, projectSectionRes, clientRes, partnerRes, geomatikaRes, geometryRes] = await Promise.all([
+      client.fetch<HomeHeroSection>(heroQuery),
+      client.fetch<HomeAboutSection>(aboutQuery),
+      client.fetch<HomeSolutionSection>(solutionQuery),
+      client.fetch<HomeRecentProjectSection>(projectSectionQuery),
+      client.fetch<HomeClientSection>(clientQuery),
+      client.fetch<HomePartnerSection>(partnerQuery),
+      client.fetch<LayananSection>(layananGeomatikaQuery),
+      client.fetch<LayananSection>(layananGeometryQuery),
+    ]);
+
+    // Combine Layanan pages into dynamic projects array
+    const dynamicProjects = [];
+    if (geomatikaRes && Object.keys(geomatikaRes).length > 0) {
+      dynamicProjects.push({
+        id: geomatikaRes._id || "geomatika",
+        title: geomatikaRes.title || 'Geomatika',
+        description: geomatikaRes.description || '',
+        image: geomatikaRes.image ? urlFor(geomatikaRes.image).url() : '/images/geo1.jpg',
+      });
+    }
+    if (geometryRes && Object.keys(geometryRes).length > 0) {
+      dynamicProjects.push({
+        id: geometryRes._id || "geometry",
+        title: geometryRes.title || 'Geometry',
+        description: geometryRes.description || '',
+        image: geometryRes.image ? urlFor(geometryRes.image).url() : '/images/geo2.jpg',
+      });
+    }
+
+    // Map Solutions
+    const solutionsData = solutionRes ? {
+      title: "Layanan Kami",
+      solutions: solutionRes.solutions ? solutionRes.solutions.map((s, i: number) => ({
+        key: s.title ? s.title.split(' ')[0] : String(i),
+        title: s.title || '',
+        description: s.description || '',
+        image: s.image ? urlFor(s.image).url() : '/images/geo1.jpg',
+      })) : []
+    } : undefined;
+
+    // Map Brands (Clients & Partners separated)
+    const brandData = (clientRes || partnerRes) ? {
+      clientsTitle: "Our Clients",
+      clientsDescription: clientRes?.description || '',
+      clientsList: clientRes?.brands ? clientRes.brands.map((b) => ({
+        name: b.name || '',
+        image: b.logo ? urlFor(b.logo).url() : '/images/1.png',
+      })) : [],
+      partnersTitle: "Our Partners", // Hardcoded
+      partnersDescription: partnerRes?.description || "",
+      partnersList: partnerRes?.partners ? partnerRes.partners.map((p) => ({
+        name: p.name || '',
+        image: p.logo ? urlFor(p.logo).url() : '/images/7.png',
+      })) : []
+    } : undefined;
+
+    const mappedAboutRes = aboutRes ? {
+      ...aboutRes,
+      description: aboutRes.description || '',
+      image: aboutRes.image ? urlFor(aboutRes.image).url() : undefined
+    } : null;
+
+    return {
+      hero: heroRes,
+      about: mappedAboutRes,
+      solution: solutionsData,
+      recentProjectSection: projectSectionRes,
+      projects: dynamicProjects,
+      brand: brandData,
+    };
+  } catch (error) {
+    console.error("Failed to fetch home page data:", error);
+    return { hero: null, about: null, solution: undefined, recentProjectSection: null, projects: null, brand: undefined };
+  }
+}
 
 export default async function Home() {
-  const [companyInfo, services, projects, partners] = await Promise.all([
-    client.fetch<CompanyInfo | null>(companyInfoQuery),
-    client.fetch<Service[]>(allServicesQuery),
-    client.fetch<Project[]>(recentProjectsQuery),
-    client.fetch<Partner[]>(allPartnersQuery),
-  ]);
-
-  // Map partners to brand format expected by BrandSection
-  const partnerBrands = partners?.map((p) => ({
-    image: p.logo ? urlFor(p.logo).width(200).url() : '/images/placeholder.png',
-    name: p.name,
-  })) || [];
+  const data = await getHomePageData();
 
   return (
     <>
       <Hero
-        backgroundImage="/images/hero.jpg"
-        subtitle="Bergabung Bersama Kami"
-        title={companyInfo?.name || 'Geometrika Studio'}
-        tagline={companyInfo?.tagline || 'Membangun Negeri'}
+        backgroundImage={data.hero?.backgroundImage ? urlFor(data.hero.backgroundImage).url() : "/images/hero.jpg"}
+        subtitle={data.hero?.subtitle || "Bergabung Bersama Kami"}
+        title={data.hero?.title || "Geometrika Studio"}
+        tagline={data.hero?.tagline || "Membangun Negeri"}
         overlayOpacity={0.1}
         align="left"
       />
-      <AboutSection companyName={companyInfo?.name} />
-      <SolutionSection services={services || []} />
-      <RecentProjectSection projects={projects || []} />
-      <BrandSection partnersList={partnerBrands} />
+      <AboutSection
+        data={data.about ? { ...data.about } : undefined}
+      />
+      <SolutionSection
+        data={data.solution}
+      />
+      <RecentProjectSection
+        title="Recent Project"
+        showcaseText={data.recentProjectSection?.showcaseText}
+        projects={data.projects && data.projects.length > 0 ? data.projects : undefined}
+      />
+      <BrandSection
+        data={(data.brand?.clientsList?.length ?? 0) > 0 ? data.brand : undefined}
+      />
     </>
   );
 }

@@ -1,29 +1,30 @@
-import article from './article';
-import author from './author';
-import category from './category';
-import blockContent from './blockContent';
-import companyInfo from './companyInfo';
-import companyVision from './companyVision';
-import companyMission from './companyMission';
-import companyValues from './companyValues';
-import companyContact from './companyContact';
-import partner from './partner';
+// --- HOME PAGE SECTIONS ---
+import homeHeroSection from './homeHeroSection';
+import homeAboutSection from './homeAboutSection';
+import homeSolutionSection from './homeSolutionSection';
+import homeRecentProjectSection from './homeRecentProjectSection';
+import homeClientSection from './homeClientSection';
+import homePartnerSection from './homePartnerSection';
+
+// --- LAYANAN PAGE SECTIONS ---
+import layananHeroSection from './layananHeroSection';
+import layananGeomatikaSection from './layananGeomatikaSection';
+import layananGeometrySection from './layananGeometrySection';
+
+// --- COLLECTIONS ---
+import portfolioProject from './portfolioProject';
 import teamMember from './teamMember';
-import service from './service';
-import project from './project';
 
 export const schemaTypes = [
-    article,
-    author,
-    category,
-    blockContent,
-    companyInfo,
-    companyVision,
-    companyMission,
-    companyValues,
-    companyContact,
-    partner,
+    homeHeroSection,
+    homeAboutSection,
+    homeSolutionSection,
+    homeRecentProjectSection,
+    homeClientSection,
+    homePartnerSection,
+    layananHeroSection,
+    layananGeomatikaSection,
+    layananGeometrySection,
+    portfolioProject,
     teamMember,
-    service,
-    project,
 ];

@@ -2,7 +2,6 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { urlFor } from '../../../lib/sanity.client';
 
 interface ProjectItem {
   id: string;
@@ -31,36 +30,28 @@ interface ShowcaseCardProps {
 
 interface RecentProjectSectionProps {
   title?: string;
-  projects?: {
-    _id: string;
-    title: string;
-    slug: string;
-    category?: string;
-    client?: string;
-    completionDate?: string;
-    mainImage?: { asset: { _ref: string }; alt?: string };
-    description?: any[];
-  }[];
+  showcaseText?: string;
+  projects?: ProjectItem[];
 }
 
 const fallbackProjects: ProjectItem[] = [
   {
     id: '1',
-    title: 'Geometrika',
+    title: 'Geomatika', // Fallback menggunakan kategori layaknya di Sanity
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo2.jpg',
   },
   {
     id: '2',
-    title: 'Geometrika',
+    title: 'Geomatika',
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo1.jpg',
   },
   {
     id: '3',
-    title: 'Geometrika',
+    title: 'Geomatika',
     description:
       'Berfokus pada pengolahan data spasial, memastikan bahwa semua langkah perencanaan dan eksekusi proyek dimulai dengan informasi yang akurat dan terperinci.',
     image: '/images/geo2.jpg',
@@ -348,37 +339,23 @@ function ShowcaseCard({ image, text }: ShowcaseCardProps) {
   );
 }
 
-// Helper: extract first paragraph text from portable text blocks
-function extractDescription(blocks?: any[]): string {
-  if (!blocks || blocks.length === 0) return '';
-  const textBlock = blocks.find((b: any) => b._type === 'block');
-  if (!textBlock?.children) return '';
-  return textBlock.children.map((c: any) => c.text || '').join('');
-}
-
 export default function RecentProjectSection({
   title = 'Recent Project',
+  showcaseText,
   projects = [],
 }: RecentProjectSectionProps) {
   // Map CMS data to display format, or use fallback
-  const displayProjects: ProjectItem[] = projects.length > 0
-    ? projects.map((p) => ({
-      id: p._id,
-      title: p.title,
-      description: extractDescription(p.description) || `Proyek ${p.category || ''} ${p.client ? `untuk ${p.client}` : ''}`.trim(),
-      image: p.mainImage ? urlFor(p.mainImage).width(800).height(500).url() : '/images/geo2.jpg',
-    }))
-    : fallbackProjects;
+  const displayProjects: ProjectItem[] = projects.length > 0 ? projects : fallbackProjects;
 
-  const showcaseText =
+  const displayShowcaseText = showcaseText ||
     'Geometrika Studio menghadirkan ekosistem layanan terpadu berbasis Building Information Modeling (BIM) untuk menghasilkan data dan informasi akurat, sehingga setiap desain, perencanaan, dan pengambilan keputusan sepanjang siklus pekerjaan dapat dilakukan secara lebih cepat, tepat, dan efisien.';
 
   return (
     <section className="relative w-full bg-white py-24 px-4 md:px-[87px] overflow-hidden">
       <div className="max-w-[1337px] mx-auto">
-        <SectionTitle title={title} />
+        <SectionTitle title={'Recent Project'} />
         <Timeline projects={displayProjects} />
-        <ShowcaseCard image="/images/hero.jpg" text={showcaseText} />
+        <ShowcaseCard image="/images/hero.jpg" text={displayShowcaseText} />
       </div>
     </section>
   );

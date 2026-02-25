@@ -2,59 +2,51 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
     name: 'teamMember',
-    title: 'Tim (Struktur Organisasi)',
+    title: 'Tim / Struktur Organisasi',
     type: 'document',
     fields: [
         defineField({
             name: 'name',
-            title: 'Nama Lengkap',
+            title: 'Nama',
             type: 'string',
             validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: 'position',
-            title: 'Jabatan / Posisi',
+            title: 'Posisi / Jabatan',
             type: 'string',
             validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: 'photo',
-            title: 'Foto Profil',
+            title: 'Foto',
             type: 'image',
-            options: { hotspot: true },
+            options: {
+                hotspot: true,
+            },
+        }),
+        defineField({
+            name: 'level',
+            title: 'Level Urutan (Misal 1 untuk hirarki teratas)',
+            description: 'Digunakan untuk mengurutkan posisi dalam struktur organisasi',
+            type: 'number',
         }),
         defineField({
             name: 'division',
             title: 'Divisi',
             type: 'string',
-            options: {
-                list: [
-                    { title: 'Manajemen Eksekutif', value: 'executive' },
-                    { title: 'Teknis / Engineering', value: 'technical' },
-                    { title: 'Administrasi & Keuangan', value: 'admin' },
-                    { title: 'Lainnya', value: 'other' },
-                ],
-            },
-        }),
-        defineField({
-            name: 'level',
-            title: 'Level Hierarki (Urutan)',
-            type: 'number',
-            description: '1 untuk level tertinggi (Direktur), dst.',
-            initialValue: 5,
         }),
         defineField({
             name: 'bio',
             title: 'Bio Singkat',
             type: 'text',
-            rows: 3,
         }),
     ],
-    orderings: [
-        {
-            title: 'Hierarchy Level',
-            name: 'hierarchyAsc',
-            by: [{ field: 'level', direction: 'asc' }],
+    preview: {
+        select: {
+            title: 'name',
+            subtitle: 'position',
+            media: 'photo',
         },
-    ],
+    },
 });

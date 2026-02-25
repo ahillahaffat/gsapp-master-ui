@@ -1,36 +1,33 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { client, urlFor } from '../../../lib/sanity.client';
-import { servicesByCategoryQuery, Service } from '../../../lib/sanity.queries';
 
 export interface GeometryService {
   id: string;
   title: string;
   image: string;
-  slug?: string;
 }
 
 export interface GeometryData {
   title: string;
+  description: string;
   services: GeometryService[];
-  buttonText: string;
 }
 
 const fallbackData: GeometryData = {
   title: 'GEOMETRY',
+  description: 'Layanan geometry lengkap untuk kebutuhan proyek Anda.',
   services: [
     { id: '1', title: 'Highway', image: '/images/geo1.jpg' },
     { id: '2', title: 'Structure', image: '/images/geo2.jpg' },
     { id: '3', title: 'Drainage', image: '/images/geo1.jpg' },
   ],
-  buttonText: 'See Details',
 };
 
-function ServiceCard({ service, buttonText, index }: { service: GeometryService; buttonText: string; index: number }) {
+function ServiceCard({ service, index }: { service: GeometryService; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -57,11 +54,11 @@ function ServiceCard({ service, buttonText, index }: { service: GeometryService;
         </h3>
         <div>
           <Link
-            href="/layanan/detail"
+            href={`/layanan/detail?type=geometry&idx=${index}`}
             className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-white font-semibold text-sm sm:text-base transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#032972' }}
           >
-            {buttonText}
+            See Details
           </Link>
         </div>
       </div>
@@ -69,31 +66,7 @@ function ServiceCard({ service, buttonText, index }: { service: GeometryService;
   );
 }
 
-export default function GeometryLayanan() {
-  const [data, setData] = useState<GeometryData>(fallbackData);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const results: Service[] = await client.fetch(servicesByCategoryQuery, { category: 'geometry' });
-        if (results && results.length > 0) {
-          setData({
-            ...fallbackData,
-            services: results.map((s) => ({
-              id: s._id,
-              title: s.title,
-              image: s.mainImage ? urlFor(s.mainImage).width(600).height(450).url() : '/images/geo1.jpg',
-              slug: s.slug,
-            })),
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching geometry services:', error);
-      }
-    }
-    fetchData();
-  }, []);
-
+export default function GeometryLayanan({ data = fallbackData }: { data?: GeometryData }) {
   return (
     <section className="relative w-full bg-white py-8 sm:py-10 md:py-12 lg:py-14 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -111,9 +84,8 @@ export default function GeometryLayanan() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8">
           {data.services.map((service, index) => (
             <ServiceCard
-              key={service.id}
+              key={service.id || index}
               service={service}
-              buttonText={data.buttonText}
               index={index}
             />
           ))}
