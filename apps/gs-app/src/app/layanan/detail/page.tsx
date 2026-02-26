@@ -1,72 +1,38 @@
-import React from 'react';
-import { notFound } from 'next/navigation';
-import { client } from '@/lib/sanity.client';
-import { urlFor } from '@/lib/sanity.client';
-import DynamicDetailRenderer from '@/app/components/layanan/dynamic-detail-renderer';
+import { redirect } from 'next/navigation';
+import { getDetailData } from './lib/getDetailData';
+import HeroDetailSection from './sections/heroDetail';
+import ProjectsSectionWrapper from './sections/projectsSection';
+import DisciplinesSectionWrapper from './sections/disciplinesSection';
+import SoftwareCollaborationsSection from './sections/softwareCollaborations';
+import ScrollToTop from './ScrollToTop';
 
-export const revalidate = 60;
+type SearchParams = Promise<{ type?: string; idx?: string }>;
 
-interface PageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-async function getServiceDetail(type: string, idx: number) {
-  try {
-    let query = '';
-
-    if (type === 'geomatika') {
-      query = `*[_type == "layananGeomatikaSection"][0]`;
-    } else if (type === 'geometry') {
-      query = `*[_type == "layananGeometrySection"][0]`;
-    } else {
-      return null;
-    }
-
-    const res = await client.fetch(query);
-    if (!res) return null;
-
-    let feature;
-    if (type === 'geomatika') {
-      feature = res;
-    } else {
-      if (!res.features || !res.features[idx]) return null;
-      feature = res.features[idx];
-    }
-
-    return {
-      title: feature.title || 'Detail Layanan',
-      image: feature.image ? urlFor(feature.image).url() : undefined,
-      detail: feature.detail || [], // The PortableText block array
-    };
-  } catch (error) {
-    console.error("Failed to fetch detail:", error);
-    return null;
-  }
-}
-
-export default async function LayananDetailPage({ searchParams }: PageProps) {
-  // In Next.js 15, searchParams is a Promise
+export default async function LayananDetailPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const params = await searchParams;
+  const type = params.type as 'geomatika' | 'geometry' | undefined;
+  const idx = params.idx;
 
-  const type = typeof params.type === 'string' ? params.type : null;
-  const idxStr = typeof params.idx === 'string' ? params.idx : '0';
-
-  if (!type || isNaN(parseInt(idxStr))) {
-    return notFound();
-  }
-
-  const idx = parseInt(idxStr);
-  const data = await getServiceDetail(type, idx);
+  const data = await getDetailData({
+    type: type ?? 'geomatika',
+    idx: idx !== undefined ? (typeof idx === 'string' ? parseInt(idx, 10) : idx) : undefined,
+  });
 
   if (!data) {
-    return notFound();
+    redirect('/layanan');
   }
 
   return (
-    <DynamicDetailRenderer
-      title={data.title}
-      image={data.image}
-      detail={data.detail}
-    />
+    <>
+      <ScrollToTop />
+      <HeroDetailSection data={data.hero} />
+      <ProjectsSectionWrapper data={data.projects} />
+      <DisciplinesSectionWrapper data={data.disciplines} />
+      <SoftwareCollaborationsSection data={data.software} />
+    </>
   );
 }

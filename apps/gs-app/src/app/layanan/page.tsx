@@ -2,8 +2,8 @@ import React from 'react';
 import HeroLayanan from '@/app/components/layanan/hero-layanan';
 import GeomatikaLayanan from '@/app/components/layanan/geomatika-layanan';
 import GeometryLayanan from '@/app/components/layanan/geometry-layanan';
-import { client } from '@/lib/sanity.client';
-import { urlFor } from '@/lib/sanity.client';
+import { client, urlFor } from '@/lib/sanity.client';
+import type { GeometryFeatureSource } from '@/lib/sanity.queries';
 
 export const revalidate = 60; // revalidate every 60 seconds
 
@@ -36,7 +36,7 @@ async function getLayananData() {
       geometry: geometryData ? {
         title: geometryData.title || 'GEOMETRY',
         description: geometryData.description || '',
-        services: geometryData.features ? geometryData.features.map((f: any, i: number) => ({
+        services: geometryData.features ? geometryData.features.map((f: GeometryFeatureSource, i: number) => ({
           id: String(i),
           title: f.title || '',
           image: f.image ? urlFor(f.image).url() : '/images/geo1.jpg',
@@ -56,8 +56,7 @@ export default async function LayananPage() {
     <>
       <HeroLayanan data={dynamicData.hero} />
       <GeomatikaLayanan data={dynamicData.geomatika} />
-      {/* Jika layanan geometry features kosong di CMS, kita jangan kirim undefined agar default fallback menyala semua. */}
-      {dynamicData.geometry && dynamicData.geometry.services && dynamicData.geometry.services.length > 0 ? (
+      {dynamicData.geometry?.services && dynamicData.geometry.services.length > 0 ? (
         <GeometryLayanan data={dynamicData.geometry} />
       ) : (
         <GeometryLayanan />

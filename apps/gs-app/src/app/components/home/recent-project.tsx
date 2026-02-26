@@ -31,6 +31,7 @@ interface ShowcaseCardProps {
 interface RecentProjectSectionProps {
   title?: string;
   showcaseText?: string;
+  showcaseImage?: string;
   projects?: ProjectItem[];
 }
 
@@ -342,20 +343,22 @@ function ShowcaseCard({ image, text }: ShowcaseCardProps) {
 export default function RecentProjectSection({
   title = 'Recent Project',
   showcaseText,
+  showcaseImage,
   projects = [],
 }: RecentProjectSectionProps) {
-  // Map CMS data to display format, or use fallback
   const displayProjects: ProjectItem[] = projects.length > 0 ? projects : fallbackProjects;
 
   const displayShowcaseText = showcaseText ||
     'Geometrika Studio menghadirkan ekosistem layanan terpadu berbasis Building Information Modeling (BIM) untuk menghasilkan data dan informasi akurat, sehingga setiap desain, perencanaan, dan pengambilan keputusan sepanjang siklus pekerjaan dapat dilakukan secara lebih cepat, tepat, dan efisien.';
 
+  const displayShowcaseImage = showcaseImage || '/images/hero.jpg';
+
   return (
     <section className="relative w-full bg-white py-24 px-4 md:px-[87px] overflow-hidden">
       <div className="max-w-[1337px] mx-auto">
-        <SectionTitle title={'Recent Project'} />
+        <SectionTitle title={title} />
         <Timeline projects={displayProjects} />
-        <ShowcaseCard image="/images/hero.jpg" text={displayShowcaseText} />
+        <ShowcaseCard image={displayShowcaseImage} text={displayShowcaseText} />
       </div>
     </section>
   );

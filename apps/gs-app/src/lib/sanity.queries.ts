@@ -156,8 +156,14 @@ export interface HomeSolutionSection {
 }
 
 export interface HomeRecentProjectSection {
+  title?: string;
   showcaseText?: string;
-  maxItems?: number;
+  showcaseImage?: SanityImage;
+  projects?: Array<{
+    title?: string;
+    description?: string;
+    image?: SanityImage;
+  }>;
 }
 
 export interface HomeClientSection {
@@ -333,4 +339,114 @@ export interface Project {
 
 export interface ProjectDetail extends Project {
   gallery?: (SanityImage & { caption?: string })[];
+}
+
+export const layananGeomatikaDetailQuery = groq`
+  *[_type == "layananGeomatikaSection"][0] {
+    description,
+    image,
+    detailProjects {
+      title,
+      projects[] {
+        title,
+        description,
+        image
+      }
+    },
+    detailDisciplines {
+      title,
+      leftColumn[] {
+        title,
+        items
+      },
+      rightColumn[] {
+        title,
+        items
+      }
+    },
+    detailCollaborations {
+      title,
+      collaborations[] {
+        name,
+        logo
+      }
+    }
+  }
+`;
+
+export const layananGeometryDetailQuery = groq`
+  *[_type == "layananGeometrySection"][0] {
+    features[] {
+      title,
+      description,
+      image,
+      detailProjects {
+        title,
+        projects[] {
+          title,
+          description,
+          image
+        }
+      },
+      detailDisciplines {
+        title,
+        leftColumn[] {
+          title,
+          items
+        },
+        rightColumn[] {
+          title,
+          items
+        }
+      },
+      detailCollaborations {
+        title,
+        collaborations[] {
+          name,
+          logo
+        }
+      }
+    }
+  }
+`;
+
+export interface GeomatikaDetailSource {
+  description?: string;
+  image?: SanityImage;
+  detailProjects?: {
+    title?: string;
+    projects?: Array<{ title?: string; description?: string; image?: SanityImage }>;
+  };
+  detailDisciplines?: {
+    title?: string;
+    leftColumn?: Array<{ title?: string; items?: string[] }>;
+    rightColumn?: Array<{ title?: string; items?: string[] }>;
+  };
+  detailCollaborations?: {
+    title?: string;
+    collaborations?: Array<{ name?: string; logo?: SanityImage }>;
+  };
+}
+
+export interface GeometryFeatureSource {
+  title?: string;
+  description?: string;
+  image?: SanityImage;
+  detailProjects?: {
+    title?: string;
+    projects?: Array<{ title?: string; description?: string; image?: SanityImage }>;
+  };
+  detailDisciplines?: {
+    title?: string;
+    leftColumn?: Array<{ title?: string; items?: string[] }>;
+    rightColumn?: Array<{ title?: string; items?: string[] }>;
+  };
+  detailCollaborations?: {
+    title?: string;
+    collaborations?: Array<{ name?: string; logo?: SanityImage }>;
+  };
+}
+
+export interface GeometryDetailSource {
+  features?: GeometryFeatureSource[];
 }
