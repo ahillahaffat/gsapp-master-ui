@@ -13,7 +13,7 @@ interface TypedObject {
 interface DynamicDetailProps {
     title: string;
     image?: string;
-    detail?: TypedObject[]; 
+    detail?: TypedObject[];
 }
 
 export default function DynamicDetailRenderer({ title, image, detail }: DynamicDetailProps) {
