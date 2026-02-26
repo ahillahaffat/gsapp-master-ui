@@ -156,8 +156,14 @@ export interface HomeSolutionSection {
 }
 
 export interface HomeRecentProjectSection {
+  title?: string;
   showcaseText?: string;
-  maxItems?: number;
+  showcaseImage?: SanityImage;
+  projects?: Array<{
+    title?: string;
+    description?: string;
+    image?: SanityImage;
+  }>;
 }
 
 export interface HomeClientSection {

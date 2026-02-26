@@ -6,7 +6,6 @@ import {
   HomeRecentProjectSection,
   HomeClientSection,
   HomePartnerSection,
-  LayananSection
 } from "@/lib/sanity.queries";
 import AboutSection from "./components/home/about-section";
 import BrandSection from "./components/home/brand-section";
@@ -21,41 +20,34 @@ async function getHomePageData() {
     const heroQuery = `*[_type == "homeHeroSection"][0]`;
     const aboutQuery = `*[_type == "homeAboutSection"][0]`;
     const solutionQuery = `*[_type == "homeSolutionSection"][0]`;
-    const projectSectionQuery = `*[_type == "homeRecentProjectSection"][0]`;
+    const projectSectionQuery = `*[_type == "homeRecentProjectSection"][0] {
+      title,
+      showcaseText,
+      showcaseImage,
+      projects[] {
+        title,
+        description,
+        image
+      }
+    }`;
     const clientQuery = `*[_type == "homeClientSection"][0]`;
     const partnerQuery = `*[_type == "homePartnerSection"][0]`;
-    const layananGeomatikaQuery = `*[_type == "layananGeomatikaSection"][0]`;
-    const layananGeometryQuery = `*[_type == "layananGeometrySection"][0]`;
 
-    const [heroRes, aboutRes, solutionRes, projectSectionRes, clientRes, partnerRes, geomatikaRes, geometryRes] = await Promise.all([
+    const [heroRes, aboutRes, solutionRes, projectSectionRes, clientRes, partnerRes] = await Promise.all([
       client.fetch<HomeHeroSection>(heroQuery),
       client.fetch<HomeAboutSection>(aboutQuery),
       client.fetch<HomeSolutionSection>(solutionQuery),
       client.fetch<HomeRecentProjectSection>(projectSectionQuery),
       client.fetch<HomeClientSection>(clientQuery),
       client.fetch<HomePartnerSection>(partnerQuery),
-      client.fetch<LayananSection>(layananGeomatikaQuery),
-      client.fetch<LayananSection>(layananGeometryQuery),
     ]);
 
-    // Combine Layanan pages into dynamic projects array
-    const dynamicProjects = [];
-    if (geomatikaRes && Object.keys(geomatikaRes).length > 0) {
-      dynamicProjects.push({
-        id: geomatikaRes._id || "geomatika",
-        title: geomatikaRes.title || 'Geomatika',
-        description: geomatikaRes.description || '',
-        image: geomatikaRes.image ? urlFor(geomatikaRes.image).url() : '/images/geo1.jpg',
-      });
-    }
-    if (geometryRes && Object.keys(geometryRes).length > 0) {
-      dynamicProjects.push({
-        id: geometryRes._id || "geometry",
-        title: geometryRes.title || 'Geometry',
-        description: geometryRes.description || '',
-        image: geometryRes.image ? urlFor(geometryRes.image).url() : '/images/geo2.jpg',
-      });
-    }
+    const recentProjects = projectSectionRes?.projects?.map((p, i) => ({
+      id: String(i + 1),
+      title: p.title || '',
+      description: p.description || '',
+      image: p.image ? urlFor(p.image).url() : '/images/geo1.jpg',
+    })) ?? [];
 
     // Map Solutions
     const solutionsData = solutionRes ? {
@@ -95,7 +87,7 @@ async function getHomePageData() {
       about: mappedAboutRes,
       solution: solutionsData,
       recentProjectSection: projectSectionRes,
-      projects: dynamicProjects,
+      projects: recentProjects,
       brand: brandData,
     };
   } catch (error) {
@@ -124,8 +116,9 @@ export default async function Home() {
         data={data.solution}
       />
       <RecentProjectSection
-        title="Recent Project"
+        title={data.recentProjectSection?.title ?? 'Recent Project'}
         showcaseText={data.recentProjectSection?.showcaseText}
+        showcaseImage={data.recentProjectSection?.showcaseImage ? urlFor(data.recentProjectSection.showcaseImage).url() : undefined}
         projects={data.projects && data.projects.length > 0 ? data.projects : undefined}
       />
       <BrandSection
