@@ -3,13 +3,15 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import type { ProjectsSectionData } from '../../types';
+import type { ProjectsSectionData } from '../types';
 
-interface ProjectsSectionProps {
+interface ProjectsSectionWrapperProps {
   data: ProjectsSectionData;
 }
 
-export function ProjectsSection({ data }: ProjectsSectionProps) {
+export default function ProjectsSectionWrapper({
+  data,
+}: ProjectsSectionWrapperProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollPrev = () => {

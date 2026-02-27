@@ -3,13 +3,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import type { HeroDetailData } from '../../types';
+import type { HeroDetailData } from '../types';
 
-interface HeroDetailProps {
+interface HeroDetailSectionProps {
   data: HeroDetailData;
 }
 
-export function HeroDetail({ data }: HeroDetailProps) {
+export default function HeroDetailSection({ data }: HeroDetailSectionProps) {
   return (
     <section className="relative w-full bg-white">
       <div className="relative w-full h-[600px] md:h-[700px] overflow-hidden rounded-b-[10px]">
