@@ -19,15 +19,14 @@ export default defineType({
     title: 'Geomatika Section (Layanan)',
     type: 'document',
     fields: [
+        defineField({
+            name: 'title',
+            title: 'Judul',
+            type: 'string',
+            description: 'Judul section Geomatika (contoh: GEOMATIKA)',
+        }),
         defineField({ name: 'description', title: 'Deskripsi Singkat', type: 'text' }),
         defineField({ name: 'image', title: 'Foto Representative', type: 'image', options: { hotspot: true } }),
-        defineField({
-            name: 'detail',
-            title: 'Detail Layanan',
-            description: 'Penjelasan lengkap untuk halaman detail layanan Geomatika',
-            type: 'array',
-            of: [{ type: 'block' }]
-        }),
         defineField({
             name: 'detailProjects',
             title: 'Detail - Projects Section',
