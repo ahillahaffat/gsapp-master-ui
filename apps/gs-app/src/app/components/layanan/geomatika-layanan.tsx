@@ -12,7 +12,7 @@ export interface GeomatikaData {
 }
 
 const defaultGeomatikaData: GeomatikaData = {
-  title: 'GEOMATIKA',
+  title: 'Geospatial',
   description:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   image: '/images/geo2.jpg',
@@ -30,7 +30,7 @@ export default function GeomatikaLayanan({ data = defaultGeomatikaData }: { data
           className="text-center mb-8 sm:mb-12 md:mb-16 text-2xl sm:text-3xl md:text-4xl font-bold underline"
           style={{ color: '#032972' }}
         >
-          {data.title}
+          Geomatika
         </motion.h2>
 
         <motion.div

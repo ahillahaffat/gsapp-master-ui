@@ -13,7 +13,7 @@ export default function SoftwareCollaborationsSection({
   data,
 }: SoftwareCollaborationsSectionProps) {
   return (
-    <section className="relative w-full bg-white py-24 overflow-hidden">
+    <section className="relative w-full max-w-full bg-white py-24 overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

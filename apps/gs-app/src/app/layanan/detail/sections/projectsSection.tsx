@@ -28,7 +28,7 @@ export default function ProjectsSectionWrapper({
 
   return (
     <section className="relative w-full bg-white py-24 overflow-hidden font-dm">
-      <div className="max-w-[2217px] mx-auto px-4 md:px-8">
+      <div className="w-full max-w-full mx-auto px-4 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
