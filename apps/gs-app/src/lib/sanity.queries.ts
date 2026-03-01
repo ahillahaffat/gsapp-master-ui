@@ -343,6 +343,7 @@ export interface ProjectDetail extends Project {
 
 export const layananGeomatikaDetailQuery = groq`
   *[_type == "layananGeomatikaSection"][0] {
+    title,
     description,
     image,
     detailProjects {
@@ -411,6 +412,7 @@ export const layananGeometryDetailQuery = groq`
 `;
 
 export interface GeomatikaDetailSource {
+  title?: string;
   description?: string;
   image?: SanityImage;
   detailProjects?: {

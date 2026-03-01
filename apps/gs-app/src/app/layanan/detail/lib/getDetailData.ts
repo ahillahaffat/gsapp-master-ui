@@ -116,7 +116,7 @@ export async function getDetailData(params: DetailParams): Promise<DetailPageDat
 
     return {
       hero: {
-        title: 'Geospatial',
+        title: geomatikaData?.title || 'Geospatial',
         description,
         backgroundImage,
       },

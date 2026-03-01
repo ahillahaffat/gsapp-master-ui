@@ -28,7 +28,7 @@ async function getLayananData() {
       } : undefined,
 
       geomatika: geomatikaData ? {
-        title: geomatikaData.title || 'GEOMATIKA',
+        title: geomatikaData.title || 'Geospatial',
         description: geomatikaData.description || '',
         image: geomatikaData.image ? urlFor(geomatikaData.image).url() : '/images/geo2.jpg',
       } : undefined,

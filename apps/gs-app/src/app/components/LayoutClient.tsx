@@ -39,7 +39,7 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
   return (
     <>
       <NavbarWrapper onMenuClick={handleMenuClick} />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow min-w-0 overflow-x-hidden">{children}</main>
       <AppFooter />
       <Toaster />
     </>

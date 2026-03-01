@@ -11,7 +11,7 @@ interface HeroDetailSectionProps {
 
 export default function HeroDetailSection({ data }: HeroDetailSectionProps) {
   return (
-    <section className="relative w-full bg-white">
+    <section className="relative w-full max-w-full bg-white overflow-hidden">
       <div className="relative w-full h-[600px] md:h-[700px] overflow-hidden rounded-b-[10px]">
         <Image
           src={data.backgroundImage}

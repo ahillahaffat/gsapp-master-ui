@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import { getDetailData } from './lib/getDetailData';
-import HeroDetailSection from './sections/heroDetail';
-import ProjectsSectionWrapper from './sections/projectsSection';
-import DisciplinesSectionWrapper from './sections/disciplinesSection';
-import SoftwareCollaborationsSection from './sections/softwareCollaborations';
+import HeroDetailSection from './components/hero-detail';
+import ProjectsSectionWrapper from './components/projects-section';
+import DisciplinesSectionWrapper from './components/disciplines-section';
+import SoftwareCollaborationsSection from './components/software-collaborations';
 import ScrollToTop from './ScrollToTop';
 
 type SearchParams = Promise<{ type?: string; idx?: string }>;

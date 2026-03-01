@@ -58,10 +58,10 @@ export default function DisciplinesSectionWrapper({
 }: DisciplinesSectionWrapperProps) {
   return (
     <section
-      className="relative w-full py-24 px-4 overflow-hidden"
+      className="relative w-full max-w-full py-24 px-4 overflow-hidden"
       style={{ backgroundColor: '#274F9A' }}
     >
-      <div className="max-w-[1502px] mx-auto w-full">
+      <div className="max-w-[1502px] w-full mx-auto">
         <div className="px-4 lg:px-0 lg:pl-[255px]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
