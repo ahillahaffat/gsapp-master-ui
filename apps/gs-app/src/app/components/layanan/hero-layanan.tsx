@@ -23,21 +23,26 @@ export const heroLayananData: HeroLayananData = {
 };
 
 export default function HeroLayanan({
-  data = heroLayananData,
+  data,
 }: { data?: HeroLayananData }) {
+  const heroData = data ?? heroLayananData;
+
   return (
     <main
-      className="relative flex items-center justify-center bg-cover bg-center min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[700px]"
+      className="relative flex items-center justify-center bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `url(${data.backgroundImage})`,
-        height: data.height === '100vh' ? '100vh' : data.height,
+        backgroundImage: `url(${heroData.backgroundImage || '/images/hero.jpg'})`,
+        minHeight: '100vh',
       }}
     >
+      {/* Dark overlay */}
       <div
         className="absolute inset-0 bg-black pointer-events-none"
-        style={{ opacity: data.overlayOpacity }}
+        style={{ opacity: heroData.overlayOpacity ?? 0.4 }}
       />
-      <section className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 flex flex-col items-center justify-center">
+
+      {/* Content */}
+      <section className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-32 pt-24 pb-16 flex flex-col items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,20 +52,25 @@ export default function HeroLayanan({
           <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12">
             <h1
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-3 md:mb-4"
-              style={{ color: '#ffffff', textShadow: '0 2px 8px #032972' }}
+              style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(3, 41, 114, 0.8)' }}
             >
-              {data.titleLine1}
+              {heroData.titleLine1}
             </h1>
             <h1
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold"
-              style={{ color: '#ffffff', textShadow: '0 2px 8px #032972' }}
+              style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(3, 41, 114, 0.8)' }}
             >
-              {data.titleLine2}
+              {heroData.titleLine2}
             </h1>
           </div>
-          <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed max-w-3xl mx-auto px-4" style={{ textShadow: '0 1px 4px #032972' }}>
-            {data.description}
-          </p>
+          {heroData.description && (
+            <p
+              className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed max-w-3xl mx-auto px-4"
+              style={{ textShadow: '0 1px 4px rgba(3, 41, 114, 0.6)' }}
+            >
+              {heroData.description}
+            </p>
+          )}
         </motion.div>
       </section>
     </main>
