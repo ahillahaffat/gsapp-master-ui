@@ -1,12 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { Toaster, toast } from 'react-hot-toast';
 import { NavbarWrapper } from './NavbarWrapper';
-
-const AppFooter = dynamic(() => import('@gs-app/ui').then((mod) => ({ default: mod.AppFooter })), {
-  ssr: true,
-});
+import { AppFooter } from '@gs-app/ui';
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   const handleMenuClick = (menu: string) => {

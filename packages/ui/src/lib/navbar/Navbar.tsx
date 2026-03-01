@@ -54,22 +54,17 @@ export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
     };
   }, []);
 
-  useEffect(() => {
-    setIsScrolled(false);
-
+    useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
       const heroHeight = window.innerHeight * 0.8;
       setIsScrolled(scrollY > heroHeight);
     };
 
-    const timeoutId = setTimeout(() => {
-      handleScroll();
-    }, 100);
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      clearTimeout(timeoutId);
       window.removeEventListener('scroll', handleScroll);
     };
   }, [pathname]);
