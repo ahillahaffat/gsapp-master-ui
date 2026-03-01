@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface AppNavbarProps {
   onMenuClick?: (menu: string) => void;
@@ -18,49 +19,21 @@ const menuItems = [
 export default function AppNavbar({ onMenuClick }: AppNavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [pathname, setPathname] = useState<string>('');
+  const pathname = usePathname();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    let currentPathname = window.location.pathname;
-    setPathname(currentPathname);
-
-    const updatePathname = () => {
-      const newPathname = window.location.pathname;
-      if (newPathname !== currentPathname) {
-        currentPathname = newPathname;
-        setPathname(newPathname);
-      }
-    };
-
-    window.addEventListener('popstate', updatePathname);
-
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const link = target.closest('a[href]') as HTMLAnchorElement;
-      if (link && link.href && !link.href.startsWith('#')) {
-        setTimeout(updatePathname, 100);
-      }
-    };
-
-    document.addEventListener('click', handleClick);
-    const intervalId = setInterval(updatePathname, 500);
-
-    return () => {
-      window.removeEventListener('popstate', updatePathname);
-      document.removeEventListener('click', handleClick);
-      clearInterval(intervalId);
-    };
-  }, []);
-
-    useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
       const heroHeight = window.innerHeight * 0.8;
       setIsScrolled(scrollY > heroHeight);
     };
 
+    // Langsung hitung posisi scroll tanpa reset & tanpa delay
     handleScroll();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
