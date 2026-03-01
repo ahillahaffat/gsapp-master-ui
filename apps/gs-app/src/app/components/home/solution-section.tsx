@@ -65,9 +65,9 @@ export default function SolutionSection({
               {service.description}
             </p>
 
-            <button className="bg-[#0D2E6D] px-6 py-3 rounded-full w-fit hover:opacity-90 transition">
+            {/* <button className="bg-[#0D2E6D] px-6 py-3 rounded-full w-fit hover:opacity-90 transition">
               See Details
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="mt-14 bg-[#1E63C6] rounded-full p-2 flex justify-between overflow-x-auto">
